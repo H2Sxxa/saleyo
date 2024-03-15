@@ -7,7 +7,7 @@ class Foo:
         print("goodbye~")
 
 
-@Mixin(target_class=Foo)
+@Mixin(target=Foo)
 class MixinFoo:
     @Intercept.configure(target_name="demo")
     @staticmethod

@@ -1,30 +1,3 @@
-# Saleyo
-
-Saleyo is a lightwight Python AOP framework, easy to use and integrate.
-
-## Getting Start
-
-```sh
-pip install saleyo
-```
-
-## Basic Tutorial
-
-### Declear a `Mixin` class
-
-```python
-from saleyo import Mixin
-
-class Foo:...
-
-
-@Mixin(target = Foo)
-class MixinFoo:...
-```
-
-### Use `MixinOperation`
-
-```python
 from typing import Any
 from saleyo import Mixin
 from saleyo.operation import Accessor, OverWrite, Post, Pre, Intercept, InvokeEvent
@@ -71,22 +44,3 @@ foo: Any = (
 print(foo.__private)  # Also `print(MixinFoo.private.value)`
 foo.func()
 foo.demo()
-
->>> private varible
->>> hello saleyo
->>> hello world
->>> post hello world
->>> pre hello world
-```
-
-### Custom Operation
-
-```python
-from typing import Any, Type
-from saleyo.base.template import MixinOperation
-from saleyo.base.toolchain import ToolChain
-
-class MyOperation(MixinOperation[Any]):
-    def mixin(self, target: Type, toolchain: ToolChain = ...) -> None:
-        ...
-```

@@ -51,6 +51,12 @@ class Container:
 
 @dataclass
 class InvokeEvent(Generic[T]):
+    """
+    A `InvokeEvent` includes the target function and the arguments to call this functions.
+
+    Recommend to use the static method `InvokeEvent.from_call` to get a `InvokeEvent`.
+    """
+
     target: Callable[..., T]
     argument: Dict[str, Any]
 

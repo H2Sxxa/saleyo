@@ -1,14 +1,12 @@
 [project]
 name = "saleyo"
-version = "0.1.0"
-description = "A Package to do mixin in Python"
-authors = [
-    {name = "H2Sxxa", email = "h2sxxa0w0@gmail.com"},
-]
+version = "0.1.1"
+description = "Saleyo is a lightwight Python AOP framework, easy to use and integrate."
+authors = [{ name = "H2Sxxa", email = "h2sxxa0w0@gmail.com" }]
 dependencies = []
-requires-python = ">=3.11"
+requires-python = ">=3.8"
 readme = "README.md"
-license = {text = "MIT"}
+license = { text = "MIT" }
 
 [build-system]
 requires = ["pdm-backend"]

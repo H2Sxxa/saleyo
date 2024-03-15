@@ -6,6 +6,10 @@ from ..base.template import MixinOperation
 
 
 class Post(MixinOperation[Callable[[T], RT]]):
+    """
+    `Post` will call after the target method, and the callable should be decorated as `@staticmethod` and have one argument to receive the result of target method.
+    """
+
     target_name: Optional[str]
 
     def __init__(
@@ -43,6 +47,9 @@ class Post(MixinOperation[Callable[[T], RT]]):
 
 
 class Pre(MixinOperation[Callable[..., RT]]):
+    """
+    `Pre` will call before the target method, and the callable should be decorated as `@staticmethod` and have `*args,**kwargs` to receive the arguments of target method.
+    """
     target_name: Optional[str]
 
     def __init__(

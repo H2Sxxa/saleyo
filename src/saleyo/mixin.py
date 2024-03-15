@@ -7,22 +7,24 @@ from .base.typing import T, Target
 
 class Mixin:
     """
-    A `Mixin` Decorator is used to invoke all the `MixinOperation` in Mixin Class
+    A `Mixin` Decorator is used to invoke all the `MixinOperation` in Mixin Class.
+    
+    If the target is a special class, you should custom the toolchain yourself.
+    
+    Allow to have more than one target, but that's not recommended.
     """
 
-    target_class: List[Type]
+    target: List[Type]
     toolchain: ToolChain
     reverse_level: bool
 
     def __init__(
         self,
-        target_class: Target,
+        target: Target,
         toolchain: ToolChain = ToolChain(),
         reverse_level: bool = False,
     ) -> None:
-        self.target_class = (
-            target_class if isinstance(target_class, list) else [target_class]
-        )
+        self.target = target if isinstance(target, list) else [target]
         self.toolchain = toolchain
         self.reverse_level = reverse_level
 
@@ -40,7 +42,7 @@ class Mixin:
         )
 
         for member in members:
-            for target in self.target_class:
+            for target in self.target:
                 member.mixin(target=target, toolchain=self.toolchain)
         return mixin
 

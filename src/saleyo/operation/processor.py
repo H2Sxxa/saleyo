@@ -10,6 +10,8 @@ from ..base.template import MixinOperation
 class Processor(MixinOperation[Callable[[str], str]]):
     """
     If you want to get the soure code of a method and use `split` and `replace` to modify and redefine it,Try `Processor`.
+
+    When you try to use this, please make sure you configure the correct module of your target, or you can use `extra_namespace` to supplement the missing things.
     """
 
     module: Optional[ModuleType]

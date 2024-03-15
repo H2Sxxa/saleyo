@@ -11,7 +11,7 @@ class Intercept(
     """
     The `Intercept` allow you to intercept the arguments before invoking target method.
 
-    Then, you can handle these arguments in your own functions.
+    Then, you can handle these arguments in your own function.
     """
 
     target_name: Optional[str]

@@ -5,16 +5,20 @@ from ..base.toolchain import ToolChain
 from ..base.template import MixinOperation
 
 
-class OverWrite(MixinOperation[MethodType]):
+class OverWrite(MixinOperation[Callable]):
     """
     OverWrite is rude and it will cover the target method.
+
+    If the target method doesn't exist, overwrite will add overwrite method to target class.
+    
+    Try avoid using `OverWrite` with other `OverWrite`.
     """
 
     target_name: Optional[str]
 
     def __init__(
         self,
-        argument: MethodType,
+        argument: Callable,
         target_name: Optional[str] = None,
     ) -> None:
         super().__init__(argument)
