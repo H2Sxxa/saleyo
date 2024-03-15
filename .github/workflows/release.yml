@@ -1,0 +1,29 @@
+# This workflows will upload a Python Package using Twine when a release is created
+# For more information see: https://help.github.com/en/actions/language-and-framework-guides/using-python-with-github-actions#publishing-to-package-registries
+
+name: PYPI Publish
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  pypi-publish:
+    name: Test Lib & Publish
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+    steps:
+    - uses: actions/checkout@v3
+    - uses: pdm-project/setup-pdm@v3
+      with:
+        version: 'head'
+    - name: Set up Python
+      uses: actions/setup-python@v3
+      with:
+        python-version: '3.11'
+    - name: Setup & Publish Lib
+      run: |
+        pdm install -G all
+    - name: Publish package distributions to PyPI
+      run: pdm publish

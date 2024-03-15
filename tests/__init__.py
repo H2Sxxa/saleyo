@@ -1,1 +1,1 @@
-from . import intercept as intercept
+import intercept as intercept
