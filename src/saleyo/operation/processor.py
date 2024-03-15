@@ -20,12 +20,13 @@ class Processor(MixinOperation[Callable[[str], str]]):
     def __init__(
         self,
         argument: Callable[[str], str],
+        level: int = 1,
         target_name: Optional[str] = None,
         prefix_indent: Optional[int] = None,
         module: Optional[ModuleType] = None,
         extra_namespace: Optional[NameSpace] = None,
     ) -> None:
-        super().__init__(argument)
+        super().__init__(argument, level)
         self.target_name = target_name
         self.prefix_indent = prefix_indent
         self.module = module
@@ -33,6 +34,7 @@ class Processor(MixinOperation[Callable[[str], str]]):
 
     @staticmethod
     def configure(
+        level: int = 1,
         target_name: Optional[str] = None,
         prefix_indent: Optional[int] = None,
         module: Optional[ModuleType] = None,
@@ -40,6 +42,7 @@ class Processor(MixinOperation[Callable[[str], str]]):
     ) -> Callable[[Callable[[str], str]], "Processor"]:
         return lambda argument: Processor(
             argument=argument,
+            level=level,
             prefix_indent=prefix_indent,
             target_name=target_name,
             module=module,

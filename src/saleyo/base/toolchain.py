@@ -55,7 +55,7 @@ class InvokeEvent(Generic[T]):
     argument: Dict[str, Any]
 
     @staticmethod
-    def from_call(target: Callable[..., Any], *args, **kwargs) -> "InvokeEvent":
+    def from_call(target: Callable[..., T], *args, **kwargs) -> "InvokeEvent[T]":
         argument = {}
         function_parameters = signature(target).parameters
         arg_names = list(function_parameters.keys())

@@ -16,6 +16,13 @@ class Accessor(Generic[T], MixinOperation[str]):
 
     _inner: Optional[T]
 
+    @staticmethod
+    def configure(level: int = 1):
+        return lambda argument: Accessor(
+            argument=argument,
+            level=level,
+        )
+
     def mixin(self, target: Type, toolchain: ToolChain = ToolChain()) -> None:
         self._inner = toolchain.tool_getattr(
             target,
