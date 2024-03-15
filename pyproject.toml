@@ -1,0 +1,19 @@
+[project]
+name = "saleyo"
+version = "0.1.0"
+description = "A Package to do mixin in Python"
+authors = [
+    {name = "H2Sxxa", email = "h2sxxa0w0@gmail.com"},
+]
+dependencies = []
+requires-python = ">=3.11"
+readme = "README.md"
+license = {text = "MIT"}
+
+[build-system]
+requires = ["pdm-backend"]
+build-backend = "pdm.backend"
+
+
+[tool.pdm]
+distribution = true
