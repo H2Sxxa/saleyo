@@ -74,9 +74,9 @@ foo.demo()
 
 >>> private varible
 >>> hello saleyo
+>>> pre hello world
 >>> hello world
 >>> post hello world
->>> pre hello world
 ```
 
 ### Custom Operation

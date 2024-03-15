@@ -50,6 +50,7 @@ class Pre(MixinOperation[Callable[..., RT]]):
     """
     `Pre` will call before the target method, and the callable should be decorated as `@staticmethod` and have `*args,**kwargs` to receive the arguments of target method.
     """
+
     target_name: Optional[str]
 
     def __init__(
@@ -66,7 +67,7 @@ class Pre(MixinOperation[Callable[..., RT]]):
         level: int = 1,
         target_name: Optional[str] = None,
     ):
-        return lambda argument: Post(
+        return lambda argument: Pre(
             argument=argument,
             target_name=target_name,
             level=level,
@@ -80,7 +81,6 @@ class Pre(MixinOperation[Callable[..., RT]]):
 
         def pre(*args, **kwargs):
             self.argument(*args, **kwargs)
-            result = native_function(*args, **kwargs)
-            return result
+            return native_function(*args, **kwargs)
 
         return toolchain.tool_setattr(target, target_name, pre)
