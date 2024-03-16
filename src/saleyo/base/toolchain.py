@@ -1,9 +1,8 @@
-from dataclasses import dataclass
-import ctypes as _ctypes
+from ctypes import py_object as _py_object, POINTER as _POINTER, cast as _cast
 from types import FunctionType
-from typing import Any, Callable, Dict, Generic, Optional
+from dataclasses import dataclass
 from gc import get_referents as _get_referents
-
+from typing import Any, Callable, Dict, Generic, Optional
 
 from ..base.typing import P, RT, NameSpace
 
@@ -11,9 +10,9 @@ from ..base.typing import P, RT, NameSpace
 @dataclass
 class ToolChain:
     """
-    The tool to do mixin.
+    The tool class to do mixin.
 
-    Default to use `getattr`/`setattr`/`hasattr`
+    Default to use `getattr`/`setattr`/`hasattr`.
     """
 
     tool_getattr: Callable[[Any, str], Any] = getattr
@@ -36,8 +35,8 @@ Notice: There is no guarantee that it can modify any class, and this method is r
 
 
 def _cpy_get_dict(_object: Any) -> Dict[str, Any]:
-    return _ctypes.cast(
-        id(_object) + type(_object).__dictoffset__, _ctypes.POINTER(_ctypes.py_object)
+    return _cast(
+        id(_object) + type(_object).__dictoffset__, _POINTER(_py_object)
     ).contents.value
 
 
@@ -84,46 +83,39 @@ class Container:
         )[function_name]
 
 
-class Arugument(Generic[P]):
+class Arguments(Generic[P]):
     """
     `Argument` is used to call function, the Generic `P` is the params of target function.
     """
 
     def __init__(self, *args: P.args, **kwargs: P.kwargs) -> None:
-        self.positional = args
-        self.keyword = kwargs
+        self.args = args
+        self.kwargs = kwargs
 
     def __str__(self) -> str:
-        return f"Arugument(positional: {self.positional}, keyword: {self.keyword} )"
+        return f"Arugument(positional: {self.args}, keyword: {self.kwargs} )"
 
 
-@dataclass
 class InvokeEvent(Generic[P, RT]):
     """
     A `InvokeEvent` includes the target function and the arguments to call this functions.
-
-    Recommend to use the static method `InvokeEvent.from_call` to get a `InvokeEvent`.
     """
 
     target: Callable[P, RT]
-    argument: Arugument[P]
+    argument: Arguments[P]
 
-    @staticmethod
-    def from_call(
+    def __init__(
+        self,
         target: Callable[P, RT],
         *args: P.args,
         **kwargs: P.kwargs,
-    ) -> "InvokeEvent[P, RT]":
-        return InvokeEvent(
-            target=target,
-            argument=Arugument(
-                *args,
-                **kwargs,
-            ),
-        )
+    ) -> None:
+        super().__init__()
+        self.target = target
+        self.argument = Arguments(*args, **kwargs)
 
     def invoke(self, target: Callable[P, RT]) -> RT:
-        return target(*self.argument.positional, **self.argument.keyword)
+        return target(*self.argument.args, **self.argument.kwargs)
 
     def invoke_target(self) -> RT:
-        return self.target(*self.argument.positional, **self.argument.keyword)
+        return self.target(*self.argument.args, **self.argument.kwargs)

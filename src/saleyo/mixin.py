@@ -1,4 +1,4 @@
-from typing import List, Type
+from typing import List
 
 from .base.template import MixinOperation
 from .base.toolchain import ToolChain
@@ -14,7 +14,7 @@ class Mixin:
     Allow to have more than one target, but that's not recommended.
     """
 
-    target: List[Type]
+    target: Target
     toolchain: ToolChain
     reverse_level: bool
 

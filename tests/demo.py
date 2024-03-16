@@ -1,6 +1,5 @@
 from typing import Any
-from saleyo import Mixin
-from saleyo.operation import Accessor, OverWrite, Post, Pre, Intercept, InvokeEvent
+from saleyo import Mixin, Accessor, OverWrite, Post, Pre, Intercept, InvokeEvent
 
 
 class Foo:
@@ -24,7 +23,7 @@ class MixinFoo:
     @Intercept.configure(target_name="demo")
     @staticmethod
     def intercept_demo(_: InvokeEvent):
-        return InvokeEvent.from_call(lambda: print("hello world"))
+        return InvokeEvent(lambda: print("hello world"))
 
     # Will call before `demo` call
     @Pre.configure(target_name="demo")

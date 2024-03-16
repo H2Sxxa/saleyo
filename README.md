@@ -1,6 +1,6 @@
 # Saleyo
 
-Saleyo is a lightwight Python AOP framework, easy to use and integrate.
+Saleyo is a lightwight scalable Python AOP framework, easy to use and integrate.
 
 ## Getting Start
 
@@ -11,6 +11,8 @@ pip install saleyo
 ## Basic Tutorial
 
 ### Declear a `Mixin` class
+
+If you don't like decorators, you can pass arguments to operations and call the `mixin` method manually.
 
 ```python
 from saleyo import Mixin
@@ -24,10 +26,11 @@ class MixinFoo:...
 
 ### Use `MixinOperation`
 
+Here is a simple demo.
+
 ```python
 from typing import Any
-from saleyo import Mixin
-from saleyo.operation import Accessor, OverWrite, Post, Pre, Intercept, InvokeEvent
+from saleyo import Mixin, Accessor, OverWrite, Post, Pre, Intercept, InvokeEvent
 
 
 class Foo:
@@ -51,7 +54,7 @@ class MixinFoo:
     @Intercept.configure(target_name="demo")
     @staticmethod
     def intercept_demo(_: InvokeEvent):
-        return InvokeEvent.from_call(lambda: print("hello world"))
+        return InvokeEvent(lambda: print("hello world"))
 
     # Will call before `demo` call
     @Pre.configure(target_name="demo")
@@ -79,14 +82,39 @@ foo.demo()
 >>> post hello world
 ```
 
+### Custom ToolChain
+
+'ToolChain' determines the ability to modify the class.
+
+```python
+from saleyo import Mixin, GCToolChain, Arguments, Pre
+
+
+@Mixin(target=str, toolchain=GCToolChain)
+class MixinStr:
+    @Pre.configure(target_name="format")
+    def pre_format(self, *args) -> Arguments[...]:
+        print(f"input args: {args}")
+        return Arguments(self, "saleyo")
+
+
+print("hello world {}".format("python"))
+
+>>> input args: ('python',)
+>>> hello world saleyo
+```
+
+
 ### Custom Operation
+
+The default operations can't satify you? Why not try define a operation yourself!
 
 ```python
 from typing import Any, Type
-from saleyo.base.template import MixinOperation
-from saleyo.base.toolchain import ToolChain
+from saleyo import MixinOperation, ToolChain
 
 class MyOperation(MixinOperation[Any]):
     def mixin(self, target: Type, toolchain: ToolChain = ...) -> None:
         ...
 ```
+

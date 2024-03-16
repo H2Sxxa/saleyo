@@ -1,7 +1,7 @@
 [project]
 name = "saleyo"
-version = "0.1.2"
-description = "Saleyo is a lightwight Python AOP framework, easy to use and integrate."
+version = "0.1.3"
+description = "Saleyo is a lightwight scalable Python AOP framework, easy to use and integrate."
 authors = [{ name = "H2Sxxa", email = "h2sxxa0w0@gmail.com" }]
 dependencies = []
 requires-python = ">=3.8"

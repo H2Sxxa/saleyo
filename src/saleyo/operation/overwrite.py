@@ -1,4 +1,4 @@
-from typing import Callable, Optional, Type
+from typing import Any, Callable, Optional, Type
 
 from ..base.toolchain import ToolChain
 from ..base.template import MixinOperation
@@ -32,11 +32,11 @@ class OverWrite(MixinOperation[Callable]):
             target_name=target_name,
         )
 
-    def mixin(self, target: Type, toolchain: ToolChain = ToolChain()) -> None:
+    def mixin(self, target: Type[Any], toolchain: ToolChain = ToolChain()) -> None:
         target_name = (
             self.argument.__name__ if self.target_name is None else self.target_name
         )
-        # self.argument.__qualname__ = f"{target.__name__}.{target_name}"
+        self.argument.__qualname__ = f"{target.__name__}.{target_name}"
         return toolchain.tool_setattr(
             target,
             target_name,

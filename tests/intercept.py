@@ -12,7 +12,7 @@ class MixinFoo:
     @Intercept.configure(target_name="demo")
     @staticmethod
     def intercept_demo(_: InvokeEvent):
-        return InvokeEvent.from_call(lambda: print("hello world"))
+        return InvokeEvent(lambda: print("hello world"))
 
     @Pre.configure(target_name="demo")
     def pre_demo(*arg):

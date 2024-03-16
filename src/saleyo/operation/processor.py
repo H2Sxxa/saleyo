@@ -1,6 +1,6 @@
 from inspect import getsource
 from types import ModuleType
-from typing import Callable, Optional, Type
+from typing import Any, Callable, Optional, Type
 
 from ..base.typing import NameSpace
 from ..base.toolchain import Container, ToolChain
@@ -12,6 +12,8 @@ class Processor(MixinOperation[Callable[[str], str]]):
     If you want to get the soure code of a method and use `split` and `replace` to modify and redefine it,Try `Processor`.
 
     When you try to use this, please make sure you configure the correct module of your target, or you can use `extra_namespace` to supplement the missing things.
+
+    Don't try to use it with external code, like the code of cpython, it will crash.
     """
 
     module: Optional[ModuleType]
@@ -53,7 +55,7 @@ class Processor(MixinOperation[Callable[[str], str]]):
 
     def mixin(
         self,
-        target: Type,
+        target: Type[Any],
         toolchain: ToolChain = ToolChain(),
     ) -> None:
         target_name = (

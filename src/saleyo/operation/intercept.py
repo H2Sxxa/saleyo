@@ -13,7 +13,9 @@ class Intercept(Generic[_PA, _PB], MixinOperation[Callable[[_A[_PA]], _B[_PB]]])
     """
     The `Intercept` allow you to intercept the arguments before invoking target method.
 
-    Then, you can handle these arguments in your own function.
+    Then, you can handle these arguments in your own function and make a redirect to another function.
+
+    If you just want to modify the arguments or the result, please see `Pre` and `Post`.
     """
 
     target_name: Optional[str]
@@ -40,7 +42,7 @@ class Intercept(Generic[_PA, _PB], MixinOperation[Callable[[_A[_PA]], _B[_PB]]])
 
     def mixin(
         self,
-        target: Type,
+        target: Type[Any],
         toolchain: ToolChain = ToolChain(),
     ) -> None:
         target_name = (
@@ -56,6 +58,6 @@ class Intercept(Generic[_PA, _PB], MixinOperation[Callable[[_A[_PA]], _B[_PB]]])
             target,
             target_name,
             lambda *args, **kwargs: self.argument(
-                InvokeEvent.from_call(native_function, *args, **kwargs)
+                InvokeEvent(native_function, *args, **kwargs)
             ).invoke_target(),
         )
