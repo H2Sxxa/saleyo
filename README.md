@@ -84,7 +84,7 @@ foo.demo()
 
 ### Custom ToolChain
 
-'ToolChain' determines the ability to modify the class.
+`ToolChain` determines the ability to modify the class.
 
 ```python
 from saleyo import Mixin, GCToolChain, Arguments, Pre
