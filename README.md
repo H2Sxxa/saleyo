@@ -50,7 +50,7 @@ class MixinFoo:
     # Will intercept the demo method and redirect to `lambda: print("hello world")`
     @Intercept.configure(target_name="demo")
     @staticmethod
-    def intercept_demo(_: InvokeEvent[None]):
+    def intercept_demo(_: InvokeEvent):
         return InvokeEvent.from_call(lambda: print("hello world"))
 
     # Will call before `demo` call

@@ -8,9 +8,9 @@ from .base.typing import T, Target
 class Mixin:
     """
     A `Mixin` Decorator is used to invoke all the `MixinOperation` in Mixin Class.
-    
+
     If the target is a special class, you should custom the toolchain yourself.
-    
+
     Allow to have more than one target, but that's not recommended.
     """
 

@@ -1,4 +1,3 @@
-from types import MethodType
 from typing import Callable, Optional, Type
 
 from ..base.toolchain import ToolChain
@@ -10,7 +9,7 @@ class OverWrite(MixinOperation[Callable]):
     OverWrite is rude and it will cover the target method.
 
     If the target method doesn't exist, overwrite will add overwrite method to target class.
-    
+
     Try avoid using `OverWrite` with other `OverWrite`.
     """
 
@@ -27,7 +26,7 @@ class OverWrite(MixinOperation[Callable]):
     @staticmethod
     def configure(
         target_name: Optional[str] = None,
-    ) -> Callable[[MethodType], "OverWrite"]:
+    ) -> Callable[[Callable], "OverWrite"]:
         return lambda argument: OverWrite(
             argument=argument,
             target_name=target_name,
