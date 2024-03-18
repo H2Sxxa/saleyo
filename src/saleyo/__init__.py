@@ -14,9 +14,9 @@ https://github.com/H2Sxxa/saleyo/blob/main/README.md
 https://pypi.org/project/saleyo/
 """
 
-from . import operation as operation
 from . import base as base
 from . import mixin as mixin
+from . import operation as operation
 from .mixin import Mixin as Mixin
 from .operation import Accessor as Accessor
 from .operation import Processor as Processor

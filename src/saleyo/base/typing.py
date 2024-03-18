@@ -1,13 +1,8 @@
-from typing import Any, Dict, List, ParamSpec, Type, TypeVar, Union
+from typing import Any, Dict, Iterable, ParamSpec, TypeVar, Union
 
-Target = Union[Type[Any], List[Type[Any]]]
-"""
-`Target` is the target of `@Mixin`, it's the alias of `Union[Type[Any], List[Type[Any]]]`
-"""
-NameSpace = Dict[str, Any]
-"""
-`NameSpace` is the alias of `Dict[str, Any]`
-"""
+
+# Generic
+
 RT = TypeVar("RT")
 """
 `RT` means `Return Type`
@@ -19,4 +14,16 @@ T = TypeVar("T")
 P = ParamSpec("P")
 """
 `P` means `Params`
+"""
+
+# Alias
+
+NameSpace = Dict[str, Any]
+"""
+`NameSpace` is the alias of `Dict[str, Any]`
+"""
+
+IterableOrSingle = Union[T, Iterable[T]]
+"""
+`IterableOrSingle[T]` is the alias of `Union[T, List[T]]` 
 """
