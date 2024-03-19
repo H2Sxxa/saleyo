@@ -13,26 +13,31 @@ class Accessor(Generic[T], MixinOperation[str]):
 
     Notice: The value only available after invoking the `mixin` method.
 
+    If the `private` is `True`, will add target class name (like `_Foo`) to the prefix to argument.
+
     If you use `@Mixin` and have more than one target classes, the `value` will always be the varible of latest target.
     """
 
     _inner: Optional[T]
+    _private: bool
 
-    def __init__(self, argument: str, level=1) -> None:
+    def __init__(self, argument: str, level=1, private=True) -> None:
         super().__init__(argument, level)
         self._inner = None
+        self._private = private
 
     @staticmethod
     def configure(level: int = 1):
         return lambda argument: Accessor(
             argument=argument,
             level=level,
+            private=True,
         )
 
     def mixin(self, target: Type[Any], toolchain: ToolChain = ToolChain()) -> None:
         self._inner = toolchain.tool_getattr(
             target,
-            f"_{target.__name__}{self.argument}",
+            f"_{target.__name__}{self.argument}" if self._private else self.argument,
         )
         return toolchain.tool_setattr(
             target,

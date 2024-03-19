@@ -24,6 +24,8 @@ from .operation import Intercept as Intercept
 from .operation import OverWrite as OverWrite
 from .operation import Pre as Pre
 from .operation import Post as Post
+from .operation import Del as Del
+from .operation import ReName as ReName
 from .base.toolchain import ToolChain as ToolChain
 from .base.toolchain import Arguments as Arguments
 from .base.toolchain import InvokeEvent as InvokeEvent

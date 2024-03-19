@@ -12,12 +12,13 @@ class ToolChain:
     """
     The tool class to do mixin.
 
-    Default to use `getattr`/`setattr`/`hasattr`.
+    Default to use `getattr`/`setattr`/`hasattr`/`delattr`.
     """
 
     tool_getattr: Callable[[Any, str], Any] = getattr
     tool_setattr: Callable[[Any, str, Any], None] = setattr
     tool_hasattr: Callable[[Any, str], bool] = hasattr
+    tool_delattr: Callable[[Any, str], None] = delattr
 
 
 GCToolChain = ToolChain(
@@ -26,6 +27,7 @@ GCToolChain = ToolChain(
     tool_setattr=lambda _object, _name, _attr: _get_referents(_object.__dict__)[
         0
     ].update({_name: _attr}),
+    tool_delattr=lambda _object, _name: _get_referents(_object)[0].__delitem__(_name),
 )
 """
 GC ToolChain use the `get_referents` functions in `gc` and it can modify some special class.
@@ -46,6 +48,7 @@ CPyToolChain = ToolChain(
     tool_setattr=lambda _object, _name, _attr: _cpy_get_dict(_object).update(
         {_name: _attr}
     ),
+    tool_delattr=lambda _object, _name: _cpy_get_dict(_object).__delitem__(_name),
 )
 """
 `CPyToolChain` use the `ctypes` to modify class, it's danger than other default toolchains.
