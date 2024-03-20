@@ -27,7 +27,9 @@ GCToolChain = ToolChain(
     tool_setattr=lambda _object, _name, _attr: _get_referents(_object.__dict__)[
         0
     ].update({_name: _attr}),
-    tool_delattr=lambda _object, _name: _get_referents(_object)[0].__delitem__(_name),
+    tool_delattr=lambda _object, _name: _get_referents(_object.__dict__)[0].__delitem__(
+        _name
+    ),
 )
 """
 GC ToolChain use the `get_referents` functions in `gc` and it can modify some special class.
