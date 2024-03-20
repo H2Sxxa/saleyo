@@ -99,7 +99,10 @@ class Mixin:
             reverse_level=reverse_level,
         )
 
-    def collect(self, mixin: T) -> T:
+    def apply_from_class(self, mixin: T) -> T:
+        """
+        Recommand to use it from `@Mixin`
+        """
         members: List[MixinOperation] = sorted(
             filter(
                 lambda member: isinstance(member, MixinOperation),
@@ -117,5 +120,22 @@ class Mixin:
                 member.mixin(target=target, toolchain=self.toolchain)
         return mixin
 
+    def apply_from_operations(self, operations: Iterable[MixinOperation]) -> None:
+        """
+        Use operations from a `Iterable[MixinOperation]` and apply to target.
+
+        Always used to mixin class manually.
+
+        ```python
+        mixin = Mixin(...)
+        op1 = ...
+        op2 = ...
+        mixin.apply_from_operations([op1, op2])
+        ```
+        """
+        for operation in operations:
+            for target in self.target:
+                operation.mixin(target=target, toolchain=self.toolchain)
+
     def __call__(self, mixin: T) -> T:
-        return self.collect(mixin=mixin)
+        return self.apply_from_class(mixin=mixin)
