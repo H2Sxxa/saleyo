@@ -29,3 +29,18 @@ class Del(MixinOperation[str]):
 
     def mixin(self, target: Type[Any], toolchain: ToolChain = ToolChain()) -> None:
         return toolchain.tool_delattr(target, self.argument)
+
+
+class Alias(MixinOperation[str]):
+    """will copy the `argument` to `alias`"""
+
+    alias: str
+
+    def __init__(self, argument: str, alias: str, level=1) -> None:
+        super().__init__(argument, level)
+        self.alias = alias
+
+    def mixin(self, target: Type[Any], toolchain: ToolChain = ToolChain()) -> None:
+        return toolchain.tool_setattr(
+            target, self.alias, toolchain.tool_getattr(target, self.argument)
+        )

@@ -26,6 +26,7 @@ from .operation import Pre as Pre
 from .operation import Post as Post
 from .operation import Del as Del
 from .operation import ReName as ReName
+from .operation import Alias as Alias
 from .base.toolchain import ToolChain as ToolChain
 from .base.toolchain import Arguments as Arguments
 from .base.toolchain import InvokeEvent as InvokeEvent

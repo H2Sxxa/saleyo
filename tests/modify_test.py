@@ -1,5 +1,6 @@
-from saleyo import ReName, GCToolChain
+from saleyo import Alias, GCToolChain
 
-ReName("upper", "lower").mixin(str, GCToolChain)
+Alias("upper", "do_upper").mixin(str, GCToolChain)
 
-print("Hello Saleyo!".lower())
+print("Hello Saleyo!".do_upper())
+print("Hello Saleyo!".upper())
