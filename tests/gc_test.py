@@ -4,9 +4,10 @@ from saleyo import Mixin, GCToolChain, Arguments, Pre
 @Mixin(target=str, toolchain=GCToolChain)
 class MixinStr:
     @Pre.configure(target_name="format")
-    def pre_format(self, *args) -> Arguments[...]:
+    def pre_format(self, *args, **kwargs) -> Arguments[...]:
         print(f"input args: {args}")
-        return Arguments(self, "python")
+        print(f"input kwargs: {kwargs}")
+        return Arguments(self, *args, **kwargs)
 
 
-print("hello world {}".format("saleyo"))
+print("hello world {},{}".format("saleyo", "some"))

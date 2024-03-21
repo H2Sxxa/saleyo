@@ -20,7 +20,7 @@ class Mixin:
 
     def __init__(
         self,
-        target: IterableOrSingle,
+        target: IterableOrSingle[Type[Any]],
         toolchain: ToolChain = ToolChain(),
         reverse_level: bool = False,
     ) -> None:
@@ -120,9 +120,11 @@ class Mixin:
                 member.mixin(target=target, toolchain=self.toolchain)
         return mixin
 
-    def apply_from_operations(self, operations: Iterable[MixinOperation]) -> None:
+    def apply_from_operations(
+        self, operations: IterableOrSingle[MixinOperation]
+    ) -> None:
         """
-        Use operations from a `Iterable[MixinOperation]` and apply to target.
+        Use operations from a `IterableOrSingle[MixinOperation]` and apply to target.
 
         Always used to mixin class manually.
 
@@ -133,7 +135,7 @@ class Mixin:
         mixin.apply_from_operations([op1, op2])
         ```
         """
-        for operation in operations:
+        for operation in operations if operations is Iterable else [operations]:
             for target in self.target:
                 operation.mixin(target=target, toolchain=self.toolchain)
 

@@ -1,6 +1,8 @@
-from saleyo import Alias, GCToolChain
+from saleyo import Alias, GCToolChain, Mixin
 
-Alias("upper", "do_upper").mixin(str, GCToolChain)
+alias = Alias("upper", "do_upper")
+
+Mixin(str, GCToolChain).apply_from_operations(alias)
 
 print("Hello Saleyo!".do_upper())
 print("Hello Saleyo!".upper())
