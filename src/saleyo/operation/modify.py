@@ -32,7 +32,7 @@ class Del(MixinOperation[str]):
 
 
 class Alias(MixinOperation[str]):
-    """will copy the `argument` to `alias`"""
+    """will copy the `argument` attribute to `alias`"""
 
     alias: str
 
