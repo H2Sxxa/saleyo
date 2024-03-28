@@ -32,5 +32,6 @@ from .base.toolchain import Arguments as Arguments
 from .base.toolchain import InvokeEvent as InvokeEvent
 from .base.toolchain import CPyToolChain as CPyToolChain
 from .base.toolchain import GCToolChain as GCToolChain
+from .base.template import MixinOperation as MixinOperation
 
-__version__ = (0, 1, 3)
+__version__ = (1, 0, 3)

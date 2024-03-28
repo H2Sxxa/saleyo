@@ -9,5 +9,3 @@ class MixinModuleA:
     def hello_over():
         print("goodbye")
 
-
-test_module_a.hello()

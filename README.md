@@ -110,11 +110,12 @@ print("hello world {}".format("python"))
 The default operations can't satify you? Why not try define a operation yourself!
 
 ```python
-from typing import Any, Type
+from typing import Any
 from saleyo import MixinOperation, ToolChain
+from saleyo.base.typing import MixinAble
 
 class MyOperation(MixinOperation[Any]):
-    def mixin(self, target: Type, toolchain: ToolChain = ...) -> None:
+    def mixin(self, target: MixinAble, toolchain: ToolChain = ...) -> None:
         ...
 ```
 
