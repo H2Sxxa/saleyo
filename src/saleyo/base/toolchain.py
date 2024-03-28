@@ -34,7 +34,7 @@ GCToolChain = ToolChain(
 """
 GC ToolChain use the `get_referents` functions in `gc` and it can modify some special class.
 
-Notice: There is no guarantee that it can modify any class, and this method is rude and danger, avoid using it in produce environment.
+Notice: There is no guarantee that it can modify any class, and this method is rude and dangerous, avoid using it in produce environment.
 """
 
 
@@ -53,9 +53,9 @@ CPyToolChain = ToolChain(
     tool_delattr=lambda _object, _name: _cpy_get_dict(_object).__delitem__(_name),
 )
 """
-`CPyToolChain` use the `ctypes` to modify class, it's danger than other default toolchains.
+`CPyToolChain` use the `ctypes` to modify class, it's dangerous than other default toolchains.
 
-Notice: There is no guarantee that it can modify any class, and this method is rude and danger, avoid using it in produce environment.
+Notice: There is no guarantee that it can modify any class, and this method is rude and dangerous, avoid using it in produce environment.
 """
 
 
