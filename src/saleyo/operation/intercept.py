@@ -1,7 +1,8 @@
+from ..base.typing import MixinAble
 from ..base.toolchain import InvokeEvent, ToolChain
 from ..base.template import MixinOperation
 
-from typing import Any, Callable, Generic, Optional, ParamSpec, Type
+from typing import Any, Callable, Generic, Optional, ParamSpec
 
 _PA = ParamSpec("_PA")
 _PB = ParamSpec("_PB")
@@ -42,7 +43,7 @@ class Intercept(Generic[_PA, _PB], MixinOperation[Callable[[_A[_PA]], _B[_PB]]])
 
     def mixin(
         self,
-        target: Type[Any],
+        target: MixinAble,
         toolchain: ToolChain = ToolChain(),
     ) -> None:
         target_name = (

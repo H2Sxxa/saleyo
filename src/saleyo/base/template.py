@@ -1,8 +1,8 @@
 from abc import ABC
-from typing import Any, Generic, Type
+from typing import Generic
 
 from .toolchain import ToolChain
-from .typing import T
+from .typing import T, MixinAble
 
 
 class MixinOperation(Generic[T], ABC):
@@ -21,7 +21,7 @@ class MixinOperation(Generic[T], ABC):
         self.argument = argument
         self.level = level
 
-    def mixin(self, target: Type[Any], toolchain: ToolChain = ToolChain()) -> None:
+    def mixin(self, target: MixinAble, toolchain: ToolChain = ToolChain()) -> None:
         raise NotImplementedError(
             f"Not Ready to use this Operation to modify '{target}' via '{toolchain}'"
         )

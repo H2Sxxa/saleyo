@@ -1,6 +1,6 @@
-from typing import Any, Callable, Optional, Type, Union
+from typing import Any, Callable, Optional, Union
 
-from ..base.typing import P, RT, T
+from ..base.typing import P, RT, T, MixinAble
 from ..base.toolchain import ToolChain, Arguments
 from ..base.template import MixinOperation
 
@@ -34,7 +34,7 @@ class Post(MixinOperation[Callable[[T], Optional[RT]]]):
             level=level,
         )
 
-    def mixin(self, target: Type[Any], toolchain: ToolChain = ToolChain()) -> None:
+    def mixin(self, target: MixinAble, toolchain: ToolChain = ToolChain()) -> None:
         target_name = (
             self.target_name if self.target_name is not None else self.argument.__name__
         )
@@ -79,7 +79,7 @@ class Pre(MixinOperation[Callable[P, Optional[Arguments[P]]]]):
             level=level,
         )
 
-    def mixin(self, target: Type[Any], toolchain: ToolChain = ToolChain()) -> None:
+    def mixin(self, target: MixinAble, toolchain: ToolChain = ToolChain()) -> None:
         target_name = (
             self.target_name if self.target_name is not None else self.argument.__name__
         )

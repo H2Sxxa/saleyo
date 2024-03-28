@@ -1,8 +1,8 @@
-from typing import Any, Iterable, List, Type
+from typing import Iterable, List
 
 from .base.template import MixinOperation
 from .base.toolchain import ToolChain
-from .base.typing import T, IterableOrSingle
+from .base.typing import T, IterableOrSingle, MixinAble
 
 
 class Mixin:
@@ -14,13 +14,13 @@ class Mixin:
     Allow to have more than one target, but that's not recommended.
     """
 
-    target: IterableOrSingle[Type[Any]]
+    target: Iterable[MixinAble]
     toolchain: ToolChain
     reverse_level: bool
 
     def __init__(
         self,
-        target: IterableOrSingle[Type[Any]],
+        target: IterableOrSingle[MixinAble],
         toolchain: ToolChain = ToolChain(),
         reverse_level: bool = False,
     ) -> None:
@@ -135,7 +135,9 @@ class Mixin:
         mixin.apply_from_operations([op1, op2])
         ```
         """
-        for operation in operations if operations is Iterable else [operations]:
+        for operation in (
+            operations if isinstance(operations, Iterable) else [operations]
+        ):
             for target in self.target:
                 operation.mixin(target=target, toolchain=self.toolchain)
 

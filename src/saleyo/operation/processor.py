@@ -1,8 +1,8 @@
 from inspect import getsource
 from types import ModuleType
-from typing import Any, Callable, Optional, Type
+from typing import Callable, Optional
 
-from ..base.typing import NameSpace
+from ..base.typing import MixinAble, NameSpace
 from ..base.toolchain import Container, ToolChain
 from ..base.template import MixinOperation
 
@@ -55,7 +55,7 @@ class Processor(MixinOperation[Callable[[str], str]]):
 
     def mixin(
         self,
-        target: Type[Any],
+        target: MixinAble,
         toolchain: ToolChain = ToolChain(),
     ) -> None:
         target_name = (

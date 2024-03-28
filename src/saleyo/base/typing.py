@@ -1,4 +1,5 @@
-from typing import Any, Dict, Iterable, ParamSpec, TypeVar, Union
+from types import ModuleType
+from typing import Any, Dict, Iterable, ParamSpec, Type, TypeVar, Union
 
 
 # Generic
@@ -26,4 +27,9 @@ NameSpace = Dict[str, Any]
 IterableOrSingle = Union[T, Iterable[T]]
 """
 `IterableOrSingle[T]` is the alias of `Union[T, List[T]]` 
+"""
+
+MixinAble = Union[Type[Any], ModuleType]
+"""
+These can be the target of mixin.
 """
