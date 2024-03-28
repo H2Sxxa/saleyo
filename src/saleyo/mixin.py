@@ -48,13 +48,11 @@ class Mixin:
         target = target if isinstance(target, Iterable) else [target]
 
         return Mixin(
-            list(
-                filter(
-                    lambda clazz: clazz.__name__ in target
-                    if qualname
-                    else clazz.__qualname__ in target,
-                    object.__subclasses__(),
-                )
+            filter(
+                lambda clazz: clazz.__name__ in target
+                if qualname
+                else clazz.__qualname__ in target,
+                object.__subclasses__(),
             ),
             toolchain=toolchain,
             reverse_level=reverse_level,
