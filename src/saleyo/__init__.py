@@ -28,6 +28,7 @@ from .operation import Del as Del
 from .operation import ReName as ReName
 from .operation import Alias as Alias
 from .operation import Ancestor as Ancestor
+from .operation import Insert as Insert
 from .base.toolchain import ToolChain as ToolChain
 from .base.toolchain import Arguments as Arguments
 from .base.toolchain import InvokeEvent as InvokeEvent

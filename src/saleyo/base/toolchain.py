@@ -71,7 +71,7 @@ class Container:
             k: v for _ in namespace if _ is not None for k, v in _.items()
         }
 
-    def exec(self, source: str) -> Dict[str, Any]:
+    def exec(self, source: str) -> NameSpace:
         exec(source, self.environment)
         return self.environment
 
