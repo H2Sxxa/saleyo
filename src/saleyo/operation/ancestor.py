@@ -1,14 +1,15 @@
 from typing import Any, Type
 from saleyo.base.template import MixinOperation
 from saleyo.base.toolchain import ToolChain
+from saleyo.base.typing import M
 
 
-class Ancestor(MixinOperation[Type[Any]]):
+class Ancestor(MixinOperation[Type[Any], M]):
     """
     Ancestor will add the `argument` to `target.__bases__`.
-    
+
     If `reverse`, the `argument` will add to the head of `target.__bases__`.
-    
+
     Don't try to use it with external code and `module`, it may crash.
     """
 

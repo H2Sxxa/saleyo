@@ -40,7 +40,7 @@ class Foo:
         pass
 
 
-@Mixin(target=Foo)
+@Mixin(target = Foo)
 class MixinFoo:
     # Will add a varible named `__private` to Foo and it has the same address with `_Foo__private`
     private: Accessor[str] = Accessor("__private")
@@ -112,10 +112,10 @@ The default operations can't satify you? Why not try define a operation yourself
 ```python
 from typing import Any
 from saleyo import MixinOperation, ToolChain
-from saleyo.base.typing import MixinAble
+from saleyo.base.typing import M
 
-class MyOperation(MixinOperation[Any]):
-    def mixin(self, target: MixinAble, toolchain: ToolChain = ...) -> None:
+class MyOperation(MixinOperation[Any, M]):
+    def mixin(self, target: M, toolchain: ToolChain = ...) -> None:
         ...
 ```
 

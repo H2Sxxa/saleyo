@@ -1,4 +1,4 @@
-from ..base.typing import MixinAble
+from ..base.typing import M
 from ..base.toolchain import InvokeEvent, ToolChain
 from ..base.template import MixinOperation
 
@@ -10,7 +10,7 @@ _A = InvokeEvent[_PA, Any]
 _B = InvokeEvent[_PB, Any]
 
 
-class Intercept(Generic[_PA, _PB], MixinOperation[Callable[[_A[_PA]], _B[_PB]]]):
+class Intercept(Generic[_PA, _PB, M], MixinOperation[Callable[[_A[_PA]], _B[_PB]], M]):
     """
     The `Intercept` allow you to intercept the arguments before invoking target method.
 
@@ -34,7 +34,7 @@ class Intercept(Generic[_PA, _PB], MixinOperation[Callable[[_A[_PA]], _B[_PB]]])
     def configure(
         level: int = 1,
         target_name: Optional[str] = None,
-    ) -> Callable[[Callable[[_A[_PA]], _B[_PB]]], "Intercept[_PA, _PB]"]:
+    ) -> Callable[[Callable[[_A[_PA]], _B[_PB]]], "Intercept[_PA, _PB, M]"]:
         return lambda argument: Intercept(
             argument=argument,
             level=level,
@@ -43,7 +43,7 @@ class Intercept(Generic[_PA, _PB], MixinOperation[Callable[[_A[_PA]], _B[_PB]]])
 
     def mixin(
         self,
-        target: MixinAble,
+        target: M,
         toolchain: ToolChain = ToolChain(),
     ) -> None:
         target_name = (

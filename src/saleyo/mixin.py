@@ -1,11 +1,11 @@
-from typing import Iterable, List
+from typing import Generic, Iterable, List, Union
 
 from .base.template import MixinOperation
 from .base.toolchain import ToolChain
-from .base.typing import T, IterableOrSingle, MixinAble
+from .base.typing import M, T, IterableOrSingle
 
 
-class Mixin:
+class Mixin(Generic[M]):
     """
     A `Mixin` Decorator is used to invoke all the `MixinOperation` in Mixin Class.
 
@@ -14,13 +14,13 @@ class Mixin:
     Allow to have more than one target, but that's not recommended.
     """
 
-    target: Iterable[MixinAble]
+    target: Iterable[M]
     toolchain: ToolChain
     reverse_level: bool
 
     def __init__(
         self,
-        target: IterableOrSingle[MixinAble],
+        target: IterableOrSingle[M],
         toolchain: ToolChain = ToolChain(),
         reverse_level: bool = False,
     ) -> None:
@@ -139,5 +139,5 @@ class Mixin:
             for target in self.target:
                 operation.mixin(target=target, toolchain=self.toolchain)
 
-    def __call__(self, mixin: T) -> T:
+    def __call__(self, mixin: T) -> Union[M, T]:
         return self.apply_from_class(mixin=mixin)

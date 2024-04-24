@@ -1,17 +1,19 @@
 from abc import ABC
-from typing import Generic
+from typing import Any, Generic
 
 from .toolchain import ToolChain
-from .typing import T, MixinAble
+from .typing import T, M
 
 
-class MixinOperation(Generic[T], ABC):
+class MixinOperation(Generic[T, M], ABC):
     """
     The MixinOperation is the base of All Operation.
 
     The generic `MixinOperation` is the type of argument.
 
-    `level` will affect to the mixin order, default to `1`.
+    `level` will affect to the mixin order, default `1`.
+    
+    If you call the `MixinOperation` or call the subclass of this, it will call the `MixinOperation.argument` 
     """
 
     argument: T
@@ -21,7 +23,9 @@ class MixinOperation(Generic[T], ABC):
         self.argument = argument
         self.level = level
 
-    def mixin(self, target: MixinAble, toolchain: ToolChain = ToolChain()) -> None:
+    def mixin(self, target: M, toolchain: ToolChain = ToolChain()) -> None:
         raise NotImplementedError(
             f"Not Ready to use this Operation to modify '{target}' via '{toolchain}'"
         )
+
+    def __call__(self, *args: Any, **kwargs: Any) -> Any: ...

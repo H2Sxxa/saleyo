@@ -1,11 +1,11 @@
 from typing import Any, Callable, Optional, Union
 
-from ..base.typing import P, RT, T, MixinAble
+from ..base.typing import M, P, RT, T
 from ..base.toolchain import ToolChain, Arguments
 from ..base.template import MixinOperation
 
 
-class Post(MixinOperation[Callable[[T], Optional[RT]]]):
+class Post(MixinOperation[Callable[[T], Optional[RT]], M]):
     """
     `Post` will call after the target method, and the callable should be decorated as `@staticmethod` and have one argument to receive the result of target method.
 
@@ -34,7 +34,7 @@ class Post(MixinOperation[Callable[[T], Optional[RT]]]):
             level=level,
         )
 
-    def mixin(self, target: MixinAble, toolchain: ToolChain = ToolChain()) -> None:
+    def mixin(self, target: M, toolchain: ToolChain = ToolChain()) -> None:
         target_name = (
             self.target_name if self.target_name is not None else self.argument.__name__
         )
@@ -50,7 +50,7 @@ class Post(MixinOperation[Callable[[T], Optional[RT]]]):
         return toolchain.tool_setattr(target, target_name, post)
 
 
-class Pre(MixinOperation[Callable[P, Optional[Arguments[P]]]]):
+class Pre(MixinOperation[Callable[P, Optional[Arguments[P]]], M]):
     """
     `Pre` will call before the target method, and the callable should be decorated as `@staticmethod` and have `*args,**kwargs` to receive the arguments of target method.
 
@@ -79,7 +79,7 @@ class Pre(MixinOperation[Callable[P, Optional[Arguments[P]]]]):
             level=level,
         )
 
-    def mixin(self, target: MixinAble, toolchain: ToolChain = ToolChain()) -> None:
+    def mixin(self, target: M, toolchain: ToolChain = ToolChain()) -> None:
         target_name = (
             self.target_name if self.target_name is not None else self.argument.__name__
         )

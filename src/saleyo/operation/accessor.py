@@ -1,11 +1,11 @@
 from typing import Generic, Optional
 
 from ..base.toolchain import ToolChain
-from ..base.typing import T, MixinAble
+from ..base.typing import T, M
 from ..base.template import MixinOperation
 
 
-class Accessor(Generic[T], MixinOperation[str]):
+class Accessor(Generic[T, M], MixinOperation[str, M]):
     """
     Want to access and modify some private varibles or methods? Try use `Accessor`!
 
@@ -34,7 +34,7 @@ class Accessor(Generic[T], MixinOperation[str]):
             private=True,
         )
 
-    def mixin(self, target: MixinAble, toolchain: ToolChain = ToolChain()) -> None:
+    def mixin(self, target: M, toolchain: ToolChain = ToolChain()) -> None:
         self._inner = toolchain.tool_getattr(
             target,
             f"_{target.__name__}{self.argument}" if self._private else self.argument,

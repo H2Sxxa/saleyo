@@ -17,6 +17,14 @@ P = ParamSpec("P")
 `P` means `Params`
 """
 
+M = TypeVar("M", Type[Any], ModuleType, Any)
+"""
+These can be the target of mixin.
+
+Not recommend input Any.
+"""
+
+
 # Alias
 
 NameSpace = Dict[str, Any]
@@ -27,9 +35,4 @@ NameSpace = Dict[str, Any]
 IterableOrSingle = Union[T, Iterable[T]]
 """
 `IterableOrSingle[T]` is the alias of `Union[T, List[T]]` 
-"""
-
-MixinAble = Union[Type[Any], ModuleType]
-"""
-These can be the target of mixin.
 """

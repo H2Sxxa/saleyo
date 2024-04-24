@@ -1,11 +1,11 @@
 from typing import Callable, Optional
 
-from ..base.typing import MixinAble
+from ..base.typing import M
 from ..base.toolchain import ToolChain
 from ..base.template import MixinOperation
 
 
-class OverWrite(MixinOperation[Callable]):
+class OverWrite(MixinOperation[Callable, M]):
     """
     OverWrite is rude and it will cover the target method.
 
@@ -33,7 +33,7 @@ class OverWrite(MixinOperation[Callable]):
             target_name=target_name,
         )
 
-    def mixin(self, target: MixinAble, toolchain: ToolChain = ToolChain()) -> None:
+    def mixin(self, target: M, toolchain: ToolChain = ToolChain()) -> None:
         target_name = (
             self.argument.__name__ if self.target_name is None else self.target_name
         )
