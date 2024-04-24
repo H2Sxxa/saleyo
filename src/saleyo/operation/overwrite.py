@@ -5,7 +5,7 @@ from ..base.toolchain import ToolChain
 from ..base.template import MixinOperation
 
 
-class OverWrite(MixinOperation[Callable, M]):
+class OverWrite(MixinOperation[Callable]):
     """
     OverWrite is rude and it will cover the target method.
 

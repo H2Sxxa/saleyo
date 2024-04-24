@@ -5,7 +5,7 @@ from ..base.toolchain import ToolChain, Arguments
 from ..base.template import MixinOperation
 
 
-class Post(MixinOperation[Callable[[T], Optional[RT]], M]):
+class Post(MixinOperation[Callable[[T], Optional[RT]]]):
     """
     `Post` will call after the target method, and the callable should be decorated as `@staticmethod` and have one argument to receive the result of target method.
 
@@ -50,7 +50,7 @@ class Post(MixinOperation[Callable[[T], Optional[RT]], M]):
         return toolchain.tool_setattr(target, target_name, post)
 
 
-class Pre(MixinOperation[Callable[P, Optional[Arguments[P]]], M]):
+class Pre(MixinOperation[Callable[P, Optional[Arguments[P]]]]):
     """
     `Pre` will call before the target method, and the callable should be decorated as `@staticmethod` and have `*args,**kwargs` to receive the arguments of target method.
 

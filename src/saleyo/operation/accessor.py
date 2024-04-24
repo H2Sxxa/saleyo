@@ -1,19 +1,17 @@
-from typing import Generic, Optional
+from typing import Callable, Generic, Optional
 
 from ..base.toolchain import ToolChain
-from ..base.typing import T, M
+from ..base.typing import P, T, M
 from ..base.template import MixinOperation
 
 
-class Accessor(Generic[T, M], MixinOperation[str, M]):
+class Accessor(Generic[T], MixinOperation[str]):
     """
-    Want to access and modify some private varibles or methods? Try use `Accessor`!
-
-    The Generic is the type of target varible.
+    The Generic `T` is the type of target varible, if you want to visit a private function, try to use `FunctionAccessor`.
 
     Notice: The value only available after invoking the `mixin` method.
 
-    If the `private` is `True`, will add target class name (like `_Foo`) to the prefix to argument.
+    If the `private` is `True`, will add target class name (like `_Foo`) to the prefix to argument, if the target is complex, you can set `private` to `False` and provide the true name by yourself.
 
     If you use `@Mixin` and have more than one target classes, the `value` will always be the varible of latest target.
     """
@@ -25,14 +23,6 @@ class Accessor(Generic[T, M], MixinOperation[str, M]):
         super().__init__(argument, level)
         self._inner = None
         self._private = private
-
-    @staticmethod
-    def configure(level: int = 1):
-        return lambda argument: Accessor(
-            argument=argument,
-            level=level,
-            private=True,
-        )
 
     def mixin(self, target: M, toolchain: ToolChain = ToolChain()) -> None:
         self._inner = toolchain.tool_getattr(
@@ -46,8 +36,54 @@ class Accessor(Generic[T, M], MixinOperation[str, M]):
         )
 
     @property
-    def value(self) -> Optional[T]:
+    def value(self) -> T:
         """
-        Will be None Call Before The `mixin` method call.
+        Don't use until The `mixin` method call.
         """
+        assert self._inner
         return self._inner
+
+    @value.setter
+    def value(self, value: T):
+        self._inner = value
+
+    @value.deleter
+    def value(self):
+        # may cause some problems
+        del self.value
+
+    def __str__(self) -> str:
+        return f"Accessor {{ value: {self._inner} ({id(self._inner)}) }}"
+
+
+class FunctionAccessor(Generic[P, T], MixinOperation[str]):
+    """
+    `FunctionAccessor` can be call directly.
+
+    It's recommend to provide the Generic `P` and `T`, it can be useful in `__call__`.
+
+    If the `private` is `True`, will add target class name (like `_Foo`) to the prefix to argument, if the target is complex, you can set `private` to `False` and provide the true name by yourself.
+
+    If you just call in operation functions, you can just use a variable with `Callable[P, T]` type.
+
+    ```python
+    something: FunctionAccessor[[str], None] = FunctionAccessor("something")
+    ```
+    """
+
+    _inner: Optional[Callable[P, T]] = None
+    _private: bool
+
+    def __init__(self, argument: str, level=1, private=True) -> None:
+        super().__init__(argument, level)
+        self._private = private
+
+    def mixin(self, target: M, toolchain: ToolChain = ToolChain()) -> None:
+        self._inner = toolchain.tool_getattr(
+            target,
+            f"_{target.__name__}{self.argument}" if self._private else self.argument,
+        )
+
+    def __call__(self, *args: P.args, **kwargs: P.kwargs) -> T:
+        assert self._inner
+        return self._inner(*args, **kwargs)

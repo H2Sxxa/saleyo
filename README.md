@@ -114,7 +114,7 @@ from typing import Any
 from saleyo import MixinOperation, ToolChain
 from saleyo.base.typing import M
 
-class MyOperation(MixinOperation[Any, M]):
+class MyOperation(MixinOperation[Any]):
     def mixin(self, target: M, toolchain: ToolChain = ...) -> None:
         ...
 ```

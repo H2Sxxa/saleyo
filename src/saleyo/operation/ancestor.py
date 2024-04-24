@@ -4,7 +4,7 @@ from saleyo.base.toolchain import ToolChain
 from saleyo.base.typing import M
 
 
-class Ancestor(MixinOperation[Type[Any], M]):
+class Ancestor(MixinOperation[Type[Any]]):
     """
     Ancestor will add the `argument` to `target.__bases__`.
 
@@ -30,7 +30,7 @@ class Ancestor(MixinOperation[Type[Any], M]):
             reverse=reverse,
         )
 
-    def mixin(self, target: Type[Any], toolchain: ToolChain = ToolChain()) -> None:
+    def mixin(self, target: M, toolchain: ToolChain = ToolChain()) -> None:
         return toolchain.tool_setattr(
             target,
             "__bases__",

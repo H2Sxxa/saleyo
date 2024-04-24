@@ -7,7 +7,7 @@ from ..base.toolchain import Container, ToolChain
 from ..base.template import MixinOperation
 
 
-class Processor(MixinOperation[Callable[[str], str], M]):
+class Processor(MixinOperation[Callable[[str], str]]):
     """
     If you want to get the soure code of a method and use `split` and `replace` to modify and redefine it,Try `Processor`.
 

@@ -11,6 +11,8 @@ class Mixin(Generic[M]):
 
     If the target is a special class, you should custom the toolchain yourself.
 
+    It is recommend to use `assert isinstance(self, <target>)` at the head of operation functions, although there may be some performance cost, but it is worth it in most conditions.
+
     Allow to have more than one target, but that's not recommended.
     """
 

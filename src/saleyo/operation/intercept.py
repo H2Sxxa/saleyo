@@ -10,7 +10,7 @@ _A = InvokeEvent[_PA, Any]
 _B = InvokeEvent[_PB, Any]
 
 
-class Intercept(Generic[_PA, _PB, M], MixinOperation[Callable[[_A[_PA]], _B[_PB]], M]):
+class Intercept(Generic[_PA, _PB], MixinOperation[Callable[[_A[_PA]], _B[_PB]]]):
     """
     The `Intercept` allow you to intercept the arguments before invoking target method.
 
@@ -34,7 +34,7 @@ class Intercept(Generic[_PA, _PB, M], MixinOperation[Callable[[_A[_PA]], _B[_PB]
     def configure(
         level: int = 1,
         target_name: Optional[str] = None,
-    ) -> Callable[[Callable[[_A[_PA]], _B[_PB]]], "Intercept[_PA, _PB, M]"]:
+    ) -> Callable[[Callable[[_A[_PA]], _B[_PB]]], "Intercept[_PA, _PB]"]:
         return lambda argument: Intercept(
             argument=argument,
             level=level,

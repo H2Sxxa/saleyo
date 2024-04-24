@@ -20,10 +20,7 @@ P = ParamSpec("P")
 M = TypeVar("M", Type[Any], ModuleType, Any)
 """
 These can be the target of mixin.
-
-Not recommend input Any.
 """
-
 
 # Alias
 

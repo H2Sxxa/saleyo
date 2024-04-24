@@ -5,7 +5,7 @@ from .toolchain import ToolChain
 from .typing import T, M
 
 
-class MixinOperation(Generic[T, M], ABC):
+class MixinOperation(Generic[T], ABC):
     """
     The MixinOperation is the base of All Operation.
 

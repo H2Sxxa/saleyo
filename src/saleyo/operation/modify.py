@@ -5,7 +5,7 @@ from ..base.toolchain import ToolChain
 from ..base.template import MixinOperation
 
 
-class ReName(MixinOperation[str, Any]):
+class ReName(MixinOperation[str]):
     """
     Rename the target name.
     """
@@ -22,7 +22,7 @@ class ReName(MixinOperation[str, Any]):
         return toolchain.tool_setattr(target, self.new, old)
 
 
-class Del(MixinOperation[str, M]):
+class Del(MixinOperation[str]):
     """
     Delete something named `argument` this from target
     """
@@ -31,7 +31,7 @@ class Del(MixinOperation[str, M]):
         return toolchain.tool_delattr(target, self.argument)
 
 
-class Alias(MixinOperation[str, M]):
+class Alias(MixinOperation[str]):
     """will copy the `argument` attribute to `alias`"""
 
     alias: str
@@ -46,9 +46,8 @@ class Alias(MixinOperation[str, M]):
         )
 
 
-class Insert(MixinOperation[Any, M]):
+class Insert(MixinOperation[Any]):
     """Will cover target when target exists."""
 
     def mixin(self, target: M, toolchain: ToolChain = ToolChain()) -> None:
         return toolchain.tool_setattr(target, self.argument.__name__, self.argument)
-
