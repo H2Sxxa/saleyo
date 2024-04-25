@@ -4,7 +4,7 @@ from dataclasses import dataclass
 from gc import get_referents as _get_referents
 from typing import Any, Callable, Dict, Generic, Optional
 
-from ..base.typing import P, RT, NameSpace
+from ..base.typing import P, T, NameSpace
 
 
 @dataclass
@@ -101,17 +101,17 @@ class Arguments(Generic[P]):
         return f"Arugument( positional: {self.args}, keyword: {self.kwargs} )"
 
 
-class InvokeEvent(Generic[P, RT]):
+class InvokeEvent(Generic[P, T]):
     """
     A `InvokeEvent` includes the target function and the arguments to call this functions.
     """
 
-    target: Callable[P, RT]
+    target: Callable[P, T]
     argument: Arguments[P]
 
     def __init__(
         self,
-        target: Callable[P, RT],
+        target: Callable[P, T],
         *args: P.args,
         **kwargs: P.kwargs,
     ) -> None:
@@ -119,8 +119,8 @@ class InvokeEvent(Generic[P, RT]):
         self.target = target
         self.argument = Arguments(*args, **kwargs)
 
-    def invoke(self, target: Callable[P, RT]) -> RT:
+    def invoke(self, target: Callable[P, T]) -> T:
         return target(*self.argument.args, **self.argument.kwargs)
 
-    def invoke_target(self) -> RT:
+    def invoke_target(self) -> T:
         return self.target(*self.argument.args, **self.argument.kwargs)

@@ -1,7 +1,8 @@
 from typing import Any, Type
-from saleyo.base.template import MixinOperation
-from saleyo.base.toolchain import ToolChain
-from saleyo.base.typing import M
+
+from ..base.template import MixinOperation
+from ..base.toolchain import ToolChain
+from ..base.typing import M
 
 
 class Ancestor(MixinOperation[Type[Any]]):

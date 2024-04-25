@@ -7,11 +7,13 @@ from ..base.template import MixinOperation
 
 class Accessor(Generic[T], MixinOperation[str]):
     """
-    The Generic `T` is the type of target varible, if you want to visit a private function, try to use `FunctionAccessor`.
+    The Generic `T` is the type of target varible, if you want to visit a private function, try to use the subclass `FunctionAccessor`.
 
     Notice: The value only available after invoking the `mixin` method.
 
     If the `private` is `True`, will add target class name (like `_Foo`) to the prefix to argument, if the target is complex, you can set `private` to `False` and provide the true name by yourself.
+
+    Also a variable named `argument` will add to target classes when `private` is `True`.
 
     If you use `@Mixin` and have more than one target classes, the `value` will always be the varible of latest target.
     """
@@ -29,11 +31,12 @@ class Accessor(Generic[T], MixinOperation[str]):
             target,
             f"_{target.__name__}{self.argument}" if self._private else self.argument,
         )
-        return toolchain.tool_setattr(
-            target,
-            self.argument,
-            self._inner,
-        )
+        if self._private:
+            toolchain.tool_setattr(
+                target,
+                self.argument,
+                self._inner,
+            )
 
     @property
     def value(self) -> T:
@@ -56,7 +59,7 @@ class Accessor(Generic[T], MixinOperation[str]):
         return f"Accessor {{ value: {self._inner} ({id(self._inner)}) }}"
 
 
-class FunctionAccessor(Generic[P, T], MixinOperation[str]):
+class FunctionAccessor(Generic[P, T], Accessor[Callable[P, T]]):
     """
     `FunctionAccessor` can be call directly.
 
@@ -64,26 +67,20 @@ class FunctionAccessor(Generic[P, T], MixinOperation[str]):
 
     If the `private` is `True`, will add target class name (like `_Foo`) to the prefix to argument, if the target is complex, you can set `private` to `False` and provide the true name by yourself.
 
-    If you just call in operation functions, you can just use a variable with `Callable[P, T]` type.
+    Also a variable named `argument` will add to target classes when `private` is `True`.s
+
+    If you just call in operation functions, you can just use a simple variable with `Callable[P, T]` type.
+    
+    If you use `@Mixin` and have more than one target classes, the `value` will always be the varible of latest target.
 
     ```python
     something: FunctionAccessor[[str], None] = FunctionAccessor("something")
     ```
     """
 
-    _inner: Optional[Callable[P, T]] = None
-    _private: bool
-
-    def __init__(self, argument: str, level=1, private=True) -> None:
-        super().__init__(argument, level)
-        self._private = private
-
-    def mixin(self, target: M, toolchain: ToolChain = ToolChain()) -> None:
-        self._inner = toolchain.tool_getattr(
-            target,
-            f"_{target.__name__}{self.argument}" if self._private else self.argument,
-        )
-
     def __call__(self, *args: P.args, **kwargs: P.kwargs) -> T:
+        """
+        Call the `argument` function in target, don't use until The `mixin` method call.
+        """
         assert self._inner
         return self._inner(*args, **kwargs)

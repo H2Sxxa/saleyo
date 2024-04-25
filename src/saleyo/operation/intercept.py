@@ -1,8 +1,8 @@
+from typing import Any, Callable, Generic, Optional, ParamSpec
+
 from ..base.typing import M
 from ..base.toolchain import InvokeEvent, ToolChain
 from ..base.template import MixinOperation
-
-from typing import Any, Callable, Generic, Optional, ParamSpec
 
 _PA = ParamSpec("_PA")
 _PB = ParamSpec("_PB")

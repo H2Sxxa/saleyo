@@ -19,6 +19,7 @@ from . import mixin as mixin
 from . import operation as operation
 from .mixin import Mixin as Mixin
 from .operation import Accessor as Accessor
+from .operation import FunctionAccessor as FunctionAccessor
 from .operation import Processor as Processor
 from .operation import Intercept as Intercept
 from .operation import OverWrite as OverWrite
@@ -35,5 +36,3 @@ from .base.toolchain import InvokeEvent as InvokeEvent
 from .base.toolchain import CPyToolChain as CPyToolChain
 from .base.toolchain import GCToolChain as GCToolChain
 from .base.template import MixinOperation as MixinOperation
-
-__version__ = (1, 0, 3)
