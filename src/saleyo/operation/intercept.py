@@ -14,7 +14,7 @@ class Intercept(Generic[_PA, _PB], MixinOperation[Callable[[_A[_PA]], _B[_PB]]])
     """
     The `Intercept` allow you to intercept the arguments before invoking target method.
 
-    Then, you can handle these arguments in your own function and make a redirect to another function.
+    Then, you can handle thefse arguments in your own function and make a redirect to another function.
 
     If you just want to modify the arguments or the result, please see `Pre` and `Post`.
     """
@@ -50,7 +50,7 @@ class Intercept(Generic[_PA, _PB], MixinOperation[Callable[[_A[_PA]], _B[_PB]]])
             self.target_name if self.target_name is not None else self.argument.__name__
         )
 
-        native_function = toolchain.tool_getattr(
+        original_function = toolchain.tool_getattr(
             target,
             target_name,
         )
@@ -59,6 +59,6 @@ class Intercept(Generic[_PA, _PB], MixinOperation[Callable[[_A[_PA]], _B[_PB]]])
             target,
             target_name,
             lambda *args, **kwargs: self.argument(
-                InvokeEvent(native_function, *args, **kwargs)
+                InvokeEvent(original_function, *args, **kwargs)
             ).invoke_target(),
         )

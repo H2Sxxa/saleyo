@@ -38,10 +38,12 @@ class Post(MixinOperation[Callable[[T], Optional[RT]]]):
         target_name = (
             self.target_name if self.target_name is not None else self.argument.__name__
         )
-        native_function: Callable[..., T] = toolchain.tool_getattr(target, target_name)
+        original_function: Callable[..., T] = toolchain.tool_getattr(
+            target, target_name
+        )
 
         def post(*args, **kwargs) -> Union[T, RT]:
-            result = native_function(*args, **kwargs)
+            result = original_function(*args, **kwargs)
             post_result = self.argument(result)
             if post_result is not None:
                 return post_result
@@ -83,12 +85,12 @@ class Pre(MixinOperation[Callable[P, Optional[Arguments[P]]]]):
         target_name = (
             self.target_name if self.target_name is not None else self.argument.__name__
         )
-        native_function = toolchain.tool_getattr(target, target_name)
+        original_function = toolchain.tool_getattr(target, target_name)
 
         def pre(*args: P.args, **kwargs: P.kwargs) -> Any:
             arguments = self.argument(*args, **kwargs)
             if arguments is not None:
-                return native_function(*arguments.args, **arguments.kwargs)
-            return native_function(*args, **kwargs)
+                return original_function(*arguments.args, **arguments.kwargs)
+            return original_function(*args, **kwargs)
 
         return toolchain.tool_setattr(target, target_name, pre)
