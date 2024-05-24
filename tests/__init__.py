@@ -1,4 +1,4 @@
-import intercept as intercept
+import custom as custom
 import demo as demo
 import gc_test as gc_test
-import custom as custom
+import intercept as intercept

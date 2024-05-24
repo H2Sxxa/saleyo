@@ -1,10 +1,12 @@
-from ctypes import py_object as _py_object, POINTER as _POINTER, cast as _cast
-from types import FunctionType
+from ctypes import POINTER as _POINTER
+from ctypes import cast as _cast
+from ctypes import py_object as _py_object
 from dataclasses import dataclass
 from gc import get_referents as _get_referents
+from types import FunctionType
 from typing import Any, Callable, Dict, Generic, Optional
 
-from ..base.typing import P, T, NameSpace
+from ..base.typing import NameSpace, P, T
 
 
 @dataclass
@@ -21,6 +23,8 @@ class ToolChain:
     tool_delattr: Callable[[Any, str], None] = delattr
 
 
+DefaultToolChain = ToolChain()
+
 GCToolChain = ToolChain(
     tool_getattr=lambda _object, _name: _get_referents(_object.__dict__)[0][_name],
     tool_hasattr=lambda _object, _name: _name in _get_referents(_object.__dict__)[0],
@@ -32,9 +36,11 @@ GCToolChain = ToolChain(
     ),
 )
 """
-GC ToolChain use the `get_referents` functions in `gc` and it can modify some special class.
+GC ToolChain use the `get_referents` functions in `gc` and 
+it can modify some special class.
 
-Notice: There is no guarantee that it can modify any class, and this method is rude and dangerous, avoid using it in produce environment.
+Notice: There is no guarantee that it can modify any class,
+and this method is rude and dangerous, avoid using it in produce environment.
 """
 
 
@@ -53,15 +59,18 @@ CPyToolChain = ToolChain(
     tool_delattr=lambda _object, _name: _cpy_get_dict(_object).__delitem__(_name),
 )
 """
-`CPyToolChain` use the `ctypes` to modify class, it's dangerous than other default toolchains.
+`CPyToolChain` use the `ctypes` to modify class, 
+it's dangerous than other default toolchains.
 
-Notice: There is no guarantee that it can modify any class, and this method is rude and dangerous, avoid using it in produce environment.
+Notice: There is no guarantee that it can modify any class, 
+and this method is rude and dangerous, avoid using it in produce environment.
 """
 
 
 class Container:
     """
-    Container is A Class to keep a namespace and use this namespace to define function / variable / ...
+    Container is A Class to keep a namespace and
+    use this namespace to define function / variable / ...
     """
 
     environment: NameSpace
@@ -90,7 +99,8 @@ class Container:
 
 class Arguments(Generic[P]):
     """
-    `Argument` is used to call function, the Generic `P` is the params of target function.
+    `Argument` is used to call function,
+    the Generic `P` is the params of target function.
     """
 
     def __init__(self, *args: P.args, **kwargs: P.kwargs) -> None:
@@ -103,7 +113,8 @@ class Arguments(Generic[P]):
 
 class InvokeEvent(Generic[P, T]):
     """
-    A `InvokeEvent` includes the target function and the arguments to call this functions.
+    A `InvokeEvent` includes the target function and the arguments to
+    call this functions.
     """
 
     target: Callable[P, T]

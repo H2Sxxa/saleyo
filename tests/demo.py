@@ -1,5 +1,6 @@
 from typing import Any
-from saleyo import Mixin, Accessor, OverWrite, Post, Pre, Intercept, InvokeEvent
+
+from saleyo import Accessor, Intercept, InvokeEvent, Mixin, OverWrite, Post, Pre
 
 
 class Foo:
@@ -11,7 +12,8 @@ class Foo:
 
 @Mixin(target=Foo)
 class MixinFoo:
-    # Will add a varible named `__private` to Foo and it has the same address with `_Foo__private`
+    # Will add a varible named `__private` to Foo and 
+    # it has the same address with `_Foo__private`
     private: Accessor[str] = Accessor("__private")
 
     # Will Add the `func` to `Foo`

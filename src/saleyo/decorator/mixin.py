@@ -1,8 +1,8 @@
 from typing import Generic, Iterable, List, Union
 
-from .base.template import MixinOperation
-from .base.toolchain import ToolChain
-from .base.typing import M, T, IterableOrSingle
+from ..base.template import MixinOperation
+from ..base.toolchain import DefaultToolChain, ToolChain
+from ..base.typing import IterableOrSingle, M, T
 
 
 class Mixin(Generic[M]):
@@ -11,7 +11,9 @@ class Mixin(Generic[M]):
 
     If the target is a special class, you should custom the toolchain yourself.
 
-    It is recommend to use `assert isinstance(self, <target>)` at the head of operation functions, although there may be some performance cost, but it is worth it in most conditions.
+    It is recommend to use `assert isinstance(self, <target>)` at the head of
+    operation functions, although there may be some performance cost,
+    but it is worth it in most conditions.
 
     Allow to have more than one target, but that's not recommended.
     """
@@ -23,7 +25,7 @@ class Mixin(Generic[M]):
     def __init__(
         self,
         target: IterableOrSingle[M],
-        toolchain: ToolChain = ToolChain(),
+        toolchain: ToolChain = DefaultToolChain,
         reverse_level: bool = False,
     ) -> None:
         self.target = target if isinstance(target, Iterable) else [target]
@@ -33,18 +35,20 @@ class Mixin(Generic[M]):
     @staticmethod
     def from_name(
         target: IterableOrSingle[str],
-        toolchain: ToolChain = ToolChain(),
+        toolchain: ToolChain = DefaultToolChain,
         reverse_level: bool = False,
         qualname: bool = False,
     ) -> "Mixin":
         """
-        Will find target classes from `object.__subclasses__()` from class name or qualname.
+        Will find target classes via `object.__subclasses__()`.
 
-        If want to find a class named `Foo`, default use the `Foo` to match, it will use `module.to.Foo` to match when `qualname` enabled.
+        If want to find a class named `Foo`, default use the `Foo` to match,
+        it will use `module.to.Foo` to match when `qualname` enabled.
 
         Please use this after the definition of target class.
 
-        The method may takes lots of time when there are a whole lot classes, recommand to use `@Mixin()` directly if you can.
+        The method may takes lots of time when there are a whole lot classes,
+        recommand to use `@Mixin()` directly if you can.
         """
 
         target = target if isinstance(target, Iterable) else [target]
@@ -64,21 +68,24 @@ class Mixin(Generic[M]):
     def from_regex(
         pattern: str,
         pattern_flags: int = 0,
-        toolchain: ToolChain = ToolChain(),
+        toolchain: ToolChain = DefaultToolChain,
         reverse_level: bool = False,
         qualname: bool = False,
         full_match: bool = False,
     ) -> "Mixin":
         """
-        Will use regex pattern to find target classes from the `object.__subclasses__()`.
+        Will use regex pattern to find target classes from the `object.__subclasses__()`
 
-        The `pattern` will convert to a `Pattern[str]` via `re.complie` and you can provide flags in `pattern_flags`.
+        The `pattern` will convert to a `Pattern[str]` via `re.complie` and
+        you can provide flags in `pattern_flags`.
 
-        If want to find a class named `Foo`, default use the `Foo` to match, it will use `module.to.Foo` to match when `qualname` enabled.
+        If want to find a class named `Foo`, default use the `Foo` to match,
+        it will use `module.to.Foo` to match when `qualname` enabled.
 
         Please use this after the definition of target class.
 
-        The method may takes lots of time when there are a whole lot classes, recommand to use `@Mixin()` directly if you can.
+        The method may takes lots of time when there are a whole lot classes,
+        recommand to use `@Mixin()` directly if you can.
         """
         import re
 

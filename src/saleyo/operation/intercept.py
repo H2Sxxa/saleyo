@@ -1,8 +1,8 @@
 from typing import Any, Callable, Generic, Optional, ParamSpec
 
-from ..base.typing import M
-from ..base.toolchain import InvokeEvent, ToolChain
 from ..base.template import MixinOperation
+from ..base.toolchain import DefaultToolChain, InvokeEvent, ToolChain
+from ..base.typing import M
 
 _PA = ParamSpec("_PA")
 _PB = ParamSpec("_PB")
@@ -14,7 +14,8 @@ class Intercept(Generic[_PA, _PB], MixinOperation[Callable[[_A[_PA]], _B[_PB]]])
     """
     The `Intercept` allow you to intercept the arguments before invoking target method.
 
-    Then, you can handle thefse arguments in your own function and make a redirect to another function.
+    Then, you can handle thefse arguments in your own function and make a redirect to
+    another function.
 
     If you just want to modify the arguments or the result, please see `Pre` and `Post`.
     """
@@ -44,7 +45,7 @@ class Intercept(Generic[_PA, _PB], MixinOperation[Callable[[_A[_PA]], _B[_PB]]])
     def mixin(
         self,
         target: M,
-        toolchain: ToolChain = ToolChain(),
+        toolchain: ToolChain = DefaultToolChain,
     ) -> None:
         target_name = (
             self.target_name if self.target_name is not None else self.argument.__name__

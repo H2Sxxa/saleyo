@@ -1,7 +1,6 @@
 from types import ModuleType
 from typing import Any, Dict, Iterable, ParamSpec, Type, TypeVar, Union
 
-
 # Generic
 
 RT = TypeVar("RT")

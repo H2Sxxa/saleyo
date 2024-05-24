@@ -1,4 +1,4 @@
-from saleyo import Mixin, GCToolChain, Arguments, Pre
+from saleyo import Arguments, GCToolChain, Mixin, Pre
 
 
 @Mixin(target=str, toolchain=GCToolChain)

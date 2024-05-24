@@ -1,4 +1,4 @@
-from saleyo import Mixin, Insert
+from saleyo import Insert, Mixin
 from saleyo.operation.accessor import Accessor, FunctionAccessor
 
 

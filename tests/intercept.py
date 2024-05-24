@@ -1,4 +1,4 @@
-from saleyo import Mixin, Intercept, Post, Pre, InvokeEvent
+from saleyo import Intercept, InvokeEvent, Mixin, Post, Pre
 
 
 class Foo:
