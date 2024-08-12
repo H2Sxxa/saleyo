@@ -15,7 +15,5 @@ class AnsA:
         print("Hello world!")
 
 
-a = A()
-assert isinstance(a, AnsA)
-
+a: AnsA = A()
 a.hello()

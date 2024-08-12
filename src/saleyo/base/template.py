@@ -6,8 +6,7 @@ from .typing import M, T
 
 
 class MixinOperation(Generic[T], ABC):
-    """
-    The MixinOperation is the base of All Operation.
+    """The MixinOperation is the base of All Operation.
 
     The generic `MixinOperation` is the type of argument.
 
@@ -20,7 +19,7 @@ class MixinOperation(Generic[T], ABC):
     argument: T
     level: int
 
-    def __init__(self, argument: T, level=1) -> None:
+    def __init__(self, argument: T, level: int = 1) -> None:
         self.argument = argument
         self.level = level
 

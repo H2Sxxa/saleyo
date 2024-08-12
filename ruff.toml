@@ -1,3 +1,4 @@
+# See https://docs.astral.sh/ruff/rules
 [lint]
 select = [
     # pycodestyle
@@ -10,6 +11,20 @@ select = [
     "B",
     # flake8-simplify
     "SIM",
+    # flake8-annotations,
+    "ANN",
+    # flake8-async
+    "ASYNC",
     # isort
     "I",
+    # PEP8-Naming,
+    "N",
+    # Flynt `static-join-to-f-string`
+    "FLY",
+    # PyLint
+    "PL"
+]
+
+allow = [
+    "ANN401", # Allow flake8-annotations `Any` dynamic type
 ]
