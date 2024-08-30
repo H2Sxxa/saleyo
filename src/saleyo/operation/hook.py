@@ -1,4 +1,4 @@
-from typing import Any, Callable, Optional, Union
+from typing import Any, Callable, Generic, Optional, Union
 
 from ..base.template import MixinOperation
 from ..base.toolchain import Arguments, DefaultToolChain, ToolChain
@@ -18,7 +18,7 @@ class Post(MixinOperation[Callable[[T], Optional[RT]]]):
 
     def __init__(
         self,
-        argument: Callable[[T], RT],
+        argument: Callable[[T], Optional[RT]],
         target_name: Optional[str] = None,
         level: int = 1,
     ) -> None:
@@ -54,7 +54,7 @@ class Post(MixinOperation[Callable[[T], Optional[RT]]]):
         return toolchain.tool_setattr(target, target_name, post)
 
 
-class Pre(MixinOperation[Callable[P, Optional[Arguments[P]]]]):
+class Pre(Generic[P], MixinOperation[Callable[P, Optional[Arguments[P]]]]):
     """
     `Pre` will call before the target method, and the callable should be decorated as
     `@staticmethod` and have `*args,**kwargs` to receive the arguments of target method.

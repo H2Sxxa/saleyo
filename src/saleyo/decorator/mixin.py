@@ -121,7 +121,6 @@ class Mixin(Generic[M]):
             key=lambda member: member.level,
             reverse=self.reverse_level,
         )
-
         for member in members:
             for target in self.target:
                 member.mixin(target=target, toolchain=self.toolchain)
