@@ -1,4 +1,5 @@
-from typing import Generic, Iterable, List, Union
+from types import ModuleType
+from typing import Callable, Generic, Iterable, List, Optional, Union
 
 from ..base.template import MixinOperation
 from ..base.toolchain import DefaultToolChain, ToolChain
@@ -10,6 +11,8 @@ class Mixin(Generic[M]):
     A `Mixin` Decorator is used to invoke all the `MixinOperation` in Mixin Class.
 
     If the target is a special class, you should custom the toolchain yourself.
+
+    When the target if a `Iterable` object, Please use [`target`]
 
     It is recommend to use `assert isinstance(self, <target>)` at the head of
     operation functions, although there may be some performance cost,
@@ -105,6 +108,47 @@ class Mixin(Generic[M]):
             toolchain=toolchain,
             reverse_level=reverse_level,
         )
+
+    @staticmethod
+    def lazy(
+        mixin: object,
+        factory: Callable[[str, ModuleType], Optional[IterableOrSingle[M]]],
+        toolchain: ToolChain = DefaultToolChain,
+        reverse_level: bool = False,
+        key: Optional[str] = None,
+        initialize: bool = True,
+        disposable: bool = True,
+    ) -> Union[int, str]:
+        """
+        Please call lazy before import a module.
+
+        when the `factory` return a non-None value, the Mixin Class will apply to target.
+
+        You can add the listener yourself to controller more details, please see `saleyo.base.import_broadcast`
+
+        initialize: initialize the import-broadcast
+
+        key: specific the key of listener, you can remove it yourself
+
+        disposable: remove listener after first Mixin
+        """
+        from saleyo.base.import_broadcast import (
+            initialize_import_broadcast,
+            add_listen_import,
+        )
+
+        if initialize:
+            initialize_import_broadcast()
+
+        def listener(k, v):
+            target = factory(k, v)
+            if target:
+                Mixin(
+                    target=target, toolchain=toolchain, reverse_level=reverse_level
+                ).apply_from_class(mixin)
+
+        add_listen_import(listener, key, disposable=disposable)
+        return key if key else hash(listener)
 
     def apply_from_class(self, mixin: T) -> T:
         """
