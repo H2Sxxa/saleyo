@@ -148,7 +148,7 @@ from saleyo.decorator.compile import CompileToken, CompileBoundary
 def mixin_a(token: Union[str, bytes, Any]):
     if not isinstance(token, bytes):
         return
-    return token.replace(b"static' tag", b"bye")
+    return token.replace(b"hell world", b"bye")
 
 
 with CompileBoundary(): # Force to compile
@@ -156,8 +156,7 @@ with CompileBoundary(): # Force to compile
 
 print(StaticMap().FIELD)  # hello bye
 
-
->>> hello hello world
+>>> hello bye
 ```
 
 
