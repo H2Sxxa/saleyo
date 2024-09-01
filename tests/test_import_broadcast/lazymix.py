@@ -4,14 +4,14 @@ from saleyo.decorator.mixin import Mixin
 from saleyo.operation.hook import Pre
 
 
-def locater(name: str, module: ModuleType):
+def locator(name: str, module: ModuleType):
     if name == "targetmod":
         if module.__dict__.__contains__("NeedLazyMixin"):
             return module.NeedLazyMixin
     return None
 
 
-@Mixin.lazy(locater)
+@Mixin.lazy(locator)
 class MixinTarget:
     @Pre
     def hello(self):

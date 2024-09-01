@@ -37,21 +37,12 @@ def list_import_listeners(disposable: bool = False):
 
 
 def remove_listen_import(
-    key: Union[str, Callable[[str, ModuleType], Any]],
+    key: Union[str, int, Callable[[str, ModuleType], Any]],
     disposable: bool = False,
 ):
     listeners = _disposable_listeners if disposable else _listeners
 
-    del listeners[key if isinstance(key, str) else hash(key)]
-
-
-def remove_listen_import_hash(
-    hash: int,
-    disposable: bool = False,
-):
-    listeners = _disposable_listeners if disposable else _listeners
-
-    del listeners[hash]
+    del listeners[key if isinstance(key, str) or isinstance(key, int) else hash(key)]
 
 
 def initialize_import_broadcast():

@@ -128,6 +128,39 @@ targetmod.NeedMixin().hello()
 >>> hello world
 ```
 
+#### Operate Compile
+
+Remember clean the target cache before mixin.
+
+```python
+# targetmodule
+def generate(name):
+    return name + " hell world"
+
+
+class StaticMap:
+    FIELD = generate("hello")
+
+# mixin
+from typing import Any, Union
+from saleyo.decorator.compile import CompileToken
+
+
+@CompileToken(lambda info: "targetmodule.py" in str(info.filename))
+def mixin(token: Union[str, bytes, Any]):
+    if not isinstance(token, bytes):
+        return
+    return token.replace(b"hell world", b"hello world")
+
+
+import targetmodule  # noqa: E402
+
+print(targetmodule.StaticMap().FIELD)
+
+>>> hello hello world
+```
+
+
 ### Custom ToolChain
 
 `ToolChain` determines the ability to modify the class.

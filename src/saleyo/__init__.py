@@ -15,6 +15,7 @@ https://pypi.org/project/saleyo/
 """
 
 from . import base as base
+from . import decorator as decorator
 from . import operation as operation
 from .base.template import MixinOperation as MixinOperation
 from .base.toolchain import Arguments as Arguments
