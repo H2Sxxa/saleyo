@@ -1,6 +1,7 @@
 from collections import OrderedDict
 from dataclasses import dataclass
 from typing import Any, Callable, Dict, Optional, Tuple, Union
+import sys
 
 _initialize_flag = False
 
@@ -111,3 +112,35 @@ def initialize_compile_broadcast():
     builtins.compile = broadcast
 
     _initialize_flag = True
+
+
+class CompileBoundary:
+    """
+    Module Inside will be force compile
+
+    ## Example
+
+    ```python
+    with CompileBoundary():
+        import module_a
+        import module_b
+        import module_c
+    ```
+    """
+
+    origin: bool
+
+    def __init__(self) -> None:
+        self.origin = sys.dont_write_bytecode
+
+    def __enter__(self):
+        self.activate()
+
+    def __exit__(self, *_):
+        self.deactivate()
+
+    def activate(self):
+        sys.dont_write_bytecode = True
+
+    def deactivate(self):
+        sys.dont_write_bytecode = self.origin

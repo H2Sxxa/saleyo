@@ -5,6 +5,7 @@ from saleyo.base.compile_broadcast import (
     add_listen_compile,
     initialize_compile_broadcast,
     remove_listen_compile,
+    CompileBoundary as CompileBoundary,
 )
 
 
