@@ -2,4 +2,3 @@
 
 from .ancestor import Ancestor as Ancestor
 from .mixin import Mixin as Mixin
-from . import lazy as lazy

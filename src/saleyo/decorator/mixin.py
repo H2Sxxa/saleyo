@@ -1,6 +1,8 @@
 from types import ModuleType
 from typing import Callable, Generic, Iterable, List, Optional, Union
 
+from saleyo.base.import_broadcast import remove_listen_import
+
 from ..base.template import MixinOperation
 from ..base.toolchain import DefaultToolChain, ToolChain
 from ..base.typing import IterableOrSingle, M, T
@@ -111,13 +113,38 @@ class Mixin(Generic[M]):
 
     @staticmethod
     def lazy(
+        factory: Callable[[str, ModuleType], Optional[IterableOrSingle[M]]],
+        toolchain: ToolChain = DefaultToolChain,
+        reverse_level: bool = False,
+        key: Optional[str] = None,
+        initialize: bool = True,
+        auto_dispose: bool = True,
+        disposable: bool = False,
+    ) -> Callable[[object], Union[int, str]]:
+        """
+        See `Mixin.lazy_mixin`
+        """
+        return lambda mixin: Mixin.lazy_mixin(
+            mixin,
+            factory,
+            toolchain,
+            reverse_level,
+            key,
+            initialize,
+            auto_dispose,
+            disposable,
+        )
+
+    @staticmethod
+    def lazy_mixin(
         mixin: object,
         factory: Callable[[str, ModuleType], Optional[IterableOrSingle[M]]],
         toolchain: ToolChain = DefaultToolChain,
         reverse_level: bool = False,
         key: Optional[str] = None,
         initialize: bool = True,
-        disposable: bool = True,
+        auto_dispose: bool = True,
+        disposable: bool = False,
     ) -> Union[int, str]:
         """
         Please call lazy before import a module.
@@ -130,7 +157,9 @@ class Mixin(Generic[M]):
 
         key: specific the key of listener, you can remove it yourself
 
-        disposable: remove listener after first Mixin
+        auto_dispose: remove listener after first Mixin
+
+        disposable: remove listener after importing first module
         """
         from saleyo.base.import_broadcast import (
             initialize_import_broadcast,
@@ -140,14 +169,27 @@ class Mixin(Generic[M]):
         if initialize:
             initialize_import_broadcast()
 
+        token = None
+
+        def rev(message):
+            nonlocal token
+            token = message
+
         def listener(k, v):
             target = factory(k, v)
             if target:
                 Mixin(
                     target=target, toolchain=toolchain, reverse_level=reverse_level
                 ).apply_from_class(mixin)
+                if token:
+                    remove_listen_import(token, disposable=disposable)
 
-        add_listen_import(listener, key, disposable=disposable)
+        add_listen_import(
+            listener,
+            key,
+            disposable=disposable,
+            dispose_token_rev=rev if auto_dispose else None,
+        )
         return key if key else hash(listener)
 
     def apply_from_class(self, mixin: T) -> T:

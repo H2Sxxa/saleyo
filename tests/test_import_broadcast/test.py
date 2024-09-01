@@ -5,7 +5,7 @@ add_listen_import(lambda k, v: print(k, v))
 
 
 def something():
-    import module as module
+    import targetmod as targetmod
 
 
 something()
