@@ -82,6 +82,52 @@ foo.demo()
 >>> post hello world
 ```
 
+#### Lazy Mixin - Mixin a Object before importing its module
+
+Lazy Mixin will be triggered after importing
+
+You dont need to care how to import target module, just define a `locator`! 
+
+```python
+# targetmod
+class NeedMixin:
+    def hello(self):
+        print("hello world")
+
+
+# mixin
+# put mixin in a single file and import to use is better
+from types import ModuleType
+from saleyo.base.import_broadcast import list_import_listeners
+from saleyo.decorator.mixin import Mixin
+from saleyo.operation.hook import Pre
+
+
+def locater(name: str, module: ModuleType):
+    if name == "targetmod":
+        if module.__dict__.__contains__("NeedMixin"):
+            return module.NeedMixin
+    return None # Dont Mixin this module
+
+
+@Mixin.lazy(locater)
+class MixinTarget:
+    @Pre
+    def hello(self):
+        print("Pre Hook")
+
+
+print(list_import_listeners()) # {hashkey: Callable}
+import targetmod as targetmod  # noqa: E402
+
+print(list_import_listeners()) # {} auto dispose after setting
+
+targetmod.NeedMixin().hello()
+
+>>> Pre Hook
+>>> hello world
+```
+
 ### Custom ToolChain
 
 `ToolChain` determines the ability to modify the class.

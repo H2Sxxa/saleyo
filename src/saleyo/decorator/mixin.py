@@ -113,7 +113,7 @@ class Mixin(Generic[M]):
 
     @staticmethod
     def lazy(
-        factory: Callable[[str, ModuleType], Optional[IterableOrSingle[M]]],
+        locator: Callable[[str, ModuleType], Optional[IterableOrSingle[M]]],
         toolchain: ToolChain = DefaultToolChain,
         reverse_level: bool = False,
         key: Optional[str] = None,
@@ -126,7 +126,7 @@ class Mixin(Generic[M]):
         """
         return lambda mixin: Mixin.lazy_mixin(
             mixin,
-            factory,
+            locator,
             toolchain,
             reverse_level,
             key,
@@ -138,7 +138,7 @@ class Mixin(Generic[M]):
     @staticmethod
     def lazy_mixin(
         mixin: object,
-        factory: Callable[[str, ModuleType], Optional[IterableOrSingle[M]]],
+        locator: Callable[[str, ModuleType], Optional[IterableOrSingle[M]]],
         toolchain: ToolChain = DefaultToolChain,
         reverse_level: bool = False,
         key: Optional[str] = None,
@@ -176,7 +176,7 @@ class Mixin(Generic[M]):
             token = message
 
         def listener(k, v):
-            target = factory(k, v)
+            target = locator(k, v)
             if target:
                 Mixin(
                     target=target, toolchain=toolchain, reverse_level=reverse_level
