@@ -7,7 +7,7 @@ from types import ModuleType
 from typing import Any, Callable, Dict, Optional, Tuple, Union
 import sys
 
-_initialize_flag = False
+from saleyo.base.broadcast import BroadCaster
 
 
 @dataclass
@@ -35,87 +35,65 @@ class CompileInfo:
         )
 
 
-_listeners: OrderedDict[
-    Union[str, int], Callable[[CompileInfo], Optional[CompileInfo]]
-] = OrderedDict()
+class CompileBroadCast(BroadCaster[[CompileInfo], Optional[CompileInfo]]):
+    _instance: Optional["CompileBroadCast"] = None
+    _initialize_flag: bool = False
+    _listeners: OrderedDict[
+        Union[str, int], Callable[[CompileInfo], Optional[CompileInfo]]
+    ] = OrderedDict()
 
-_disposable_listeners: OrderedDict[
-    Union[str, int], Callable[[CompileInfo], Optional[CompileInfo]]
-] = OrderedDict()
+    _disposable_listeners: OrderedDict[
+        Union[str, int], Callable[[CompileInfo], Optional[CompileInfo]]
+    ] = OrderedDict()
 
+    def listeners(
+        self,
+        disposable: bool = False,
+    ) -> Dict[Any, Callable[[CompileInfo], CompileInfo | None]]:
+        return self._disposable_listeners if disposable else self._listeners
 
-def add_listen_compile(
-    listener: Callable[[CompileInfo], Optional[CompileInfo]],
-    key: Optional[str] = None,
-    disposable: bool = False,
-    dispose_token_rev: Optional[Callable[[Union[int, str]], Any]] = None,
-):
-    listeners = _disposable_listeners if disposable else _listeners
+    @staticmethod
+    def instance() -> "CompileBroadCast":
+        if not CompileBroadCast._instance:
+            CompileBroadCast._instance = CompileBroadCast()
+        return CompileBroadCast._instance
 
-    hashkey = key if key else hash(listener)
-    if hashkey in listeners:
-        raise Exception(f"{hashkey} Duplicate!")
+    @staticmethod
+    def initialize():
+        if CompileBroadCast._initialize_flag:
+            return
 
-    if dispose_token_rev:
-        dispose_token_rev(hashkey)
+        import builtins
 
-    listeners[hashkey] = listener
+        origin_compile = compile
 
+        def broadcast(
+            source: Union[str, bytes, Any],
+            filename: Union[str, bytes, Any],
+            mode,
+            *args,
+            **kwargs,
+        ):
+            info = CompileInfo(source, filename, mode, args, kwargs)
 
-def list_compile_listeners(disposable: bool = False):
-    return _disposable_listeners if disposable else _listeners
+            def on_value(rev: Optional[CompileInfo]):
+                if rev:
+                    nonlocal info
+                    info = rev
 
+            CompileBroadCast.instance().all_notifiers(on_value=on_value)(info)
 
-def remove_listen_compile(
-    key: Union[str, int, Callable[[CompileInfo], Optional[CompileInfo]]],
-    disposable: bool = False,
-):
-    listeners = _disposable_listeners if disposable else _listeners
+            return origin_compile(
+                info.source,
+                info.filename,
+                info.mode,
+                *info.args,
+                **info.kwargs,
+            )
 
-    del listeners[key if isinstance(key, str) or isinstance(key, int) else hash(key)]
+        builtins.compile = broadcast
 
-
-def initialize_compile_broadcast():
-    global _initialize_flag
-    if _initialize_flag:
-        return
-
-    import builtins
-
-    origin_compile = compile
-
-    def broadcast(
-        source: Union[str, bytes, Any],
-        filename: Union[str, bytes, Any],
-        mode,
-        *args,
-        **kwargs,
-    ):
-        info = CompileInfo(source, filename, mode, args, kwargs)
-        # BroadCast
-        for listener in _listeners.copy().values():
-            result = listener(info)
-            if result:
-                info = result
-        # Disposable
-        for hashkey, listener in _disposable_listeners.copy().items():
-            listener(info)
-            result = listener(info)
-            if result:
-                info = result
-            del _disposable_listeners[hashkey]
-
-        return origin_compile(
-            info.source,
-            info.filename,
-            info.mode,
-            *info.args,
-            **info.kwargs,
-        )
-
-    builtins.compile = broadcast
-
-    _initialize_flag = True
+        CompileBroadCast._initialize_flag = True
 
 
 class CompileBoundary:

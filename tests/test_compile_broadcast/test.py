@@ -4,14 +4,13 @@ import targetmodule
 
 
 @CompileToken(lambda info: "targetmodule.py" in str(info.filename))
-def mixin_a(token: Union[str, bytes, Any]):
+def mixin(token: Union[str, bytes, Any]):
     if not isinstance(token, bytes):
         return
-    return token.replace(b"static", b"bye2")
+    return token.replace(b"static", b"bye")
 
 
-with CompileBoundary(no_cache=False) as compile:
-    compile.recompile_module(targetmodule)
+CompileBoundary.recompile_module(targetmodule)
 
 
 print(targetmodule.Static().FIELD)  # hello bye

@@ -1,7 +1,6 @@
 from types import ModuleType
-from typing import Callable, Generic, Iterable, List, Optional, Union
+from typing import Any, Callable, Generic, Iterable, List, Optional, Union
 
-from saleyo.base.import_broadcast import remove_listen_import
 
 from ..base.template import MixinOperation
 from ..base.toolchain import DefaultToolChain, ToolChain
@@ -116,7 +115,7 @@ class Mixin(Generic[M]):
         locator: Callable[[str, ModuleType], Optional[IterableOrSingle[M]]],
         toolchain: ToolChain = DefaultToolChain,
         reverse_level: bool = False,
-        key: Optional[str] = None,
+        key: Optional[Any] = None,
         initialize: bool = True,
         auto_dispose: bool = True,
         disposable: bool = False,
@@ -141,7 +140,7 @@ class Mixin(Generic[M]):
         locator: Callable[[str, ModuleType], Optional[IterableOrSingle[M]]],
         toolchain: ToolChain = DefaultToolChain,
         reverse_level: bool = False,
-        key: Optional[str] = None,
+        key: Optional[Any] = None,
         initialize: bool = True,
         auto_dispose: bool = True,
         disposable: bool = False,
@@ -161,19 +160,18 @@ class Mixin(Generic[M]):
 
         disposable: remove listener after importing first module
         """
-        from saleyo.base.import_broadcast import (
-            initialize_import_broadcast,
-            add_listen_import,
-        )
+        from saleyo.broadcast.importmod import ImportBroadCast
+
+        broadcast = ImportBroadCast()
 
         if initialize:
-            initialize_import_broadcast()
+            broadcast.initialize()
 
-        token = None
+        dispose_key = None
 
-        def rev(message):
-            nonlocal token
-            token = message
+        def key_rev(key):
+            nonlocal dispose_key
+            dispose_key = key
 
         def listener(k, v):
             target = locator(k, v)
@@ -181,15 +179,16 @@ class Mixin(Generic[M]):
                 Mixin(
                     target=target, toolchain=toolchain, reverse_level=reverse_level
                 ).apply_from_class(mixin)
-                if token:
-                    remove_listen_import(token, disposable=disposable)
+                if dispose_key:
+                    broadcast.remove_listener(dispose_key, disposable=disposable)
 
-        add_listen_import(
+        broadcast.add_listener(
             listener,
             key,
             disposable=disposable,
-            dispose_token_rev=rev if auto_dispose else None,
+            key_rev=key_rev if auto_dispose else None,
         )
+
         return key if key else hash(listener)
 
     def apply_from_class(self, mixin: T) -> T:

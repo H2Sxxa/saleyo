@@ -6,6 +6,7 @@ from .accessor import Accessor as Accessor
 from .accessor import FunctionAccessor as FunctionAccessor
 from .hook import Post as Post
 from .hook import Pre as Pre
+from .hook import Both as Both
 from .intercept import Intercept as Intercept
 from .modify import Alias as Alias
 from .modify import Del as Del

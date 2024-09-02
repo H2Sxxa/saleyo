@@ -82,7 +82,7 @@ foo.demo()
 >>> post hello world
 ```
 
-#### Lazy Mixin - Mixin a Object before importing its module
+### Lazy Mixin - Mixin a Object before importing its module
 
 Lazy Mixin will be triggered after importing
 
@@ -128,7 +128,7 @@ targetmod.NeedMixin().hello()
 >>> hello world
 ```
 
-#### Operate Compile
+### Operate Compile
 
 ```python
 # targetmodule
@@ -162,6 +162,9 @@ print(targetmodule.Static().FIELD)  # hello bye
 >>> hello bye
 ```
 
+### Which Decorator should I use?
+
+![img](https://github.com/H2Sxxa/saleyo/raw/main/doc/decorator.png)
 
 ### Custom ToolChain
 

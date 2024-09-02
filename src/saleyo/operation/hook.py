@@ -98,3 +98,37 @@ class Pre(Generic[P], MixinOperation[Callable[P, Optional[Arguments[P]]]]):
             return original_function(*args, **kwargs)
 
         return toolchain.tool_setattr(target, target_name, pre)
+
+
+class Both(
+    Generic[P, RT],
+    MixinOperation[Callable[[Arguments[P], Callable[P, RT]], RT]],
+):
+    """
+    `Both` will call before the target method, and the callable should be decorated as
+    `@staticmethod` and have `*args,**kwargs` to receive the arguments of target method.
+
+    `Both` will give you the original target method and the arguments.
+    """
+
+    target_name: Optional[str]
+
+    def __init__(
+        self,
+        argument: Callable[[Arguments[P], Callable[P, RT]], RT],
+        target_name: Optional[str] = None,
+        level: int = 1,
+    ) -> None:
+        super().__init__(argument, level)
+        self.target_name = target_name
+
+    def mixin(self, target: M, toolchain: ToolChain = DefaultToolChain) -> None:
+        target_name = (
+            self.target_name if self.target_name is not None else self.argument.__name__
+        )
+        original_function = toolchain.tool_getattr(target, target_name)
+
+        def both(*args: P.args, **kwargs: P.kwargs) -> RT:
+            return self.argument(Arguments(*args, **kwargs), original_function)
+
+        return toolchain.tool_setattr(target, target_name, both)
