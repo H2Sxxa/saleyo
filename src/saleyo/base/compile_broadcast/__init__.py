@@ -1,5 +1,9 @@
 from collections import OrderedDict
 from dataclasses import dataclass
+from importlib import reload
+from os import unlink
+from pathlib import Path
+from types import ModuleType
 from typing import Any, Callable, Dict, Optional, Tuple, Union
 import sys
 
@@ -116,7 +120,7 @@ def initialize_compile_broadcast():
 
 class CompileBoundary:
     """
-    Module Inside will be force compile
+    Module Inside will force compile.
 
     ## Example
 
@@ -129,18 +133,45 @@ class CompileBoundary:
     """
 
     origin: bool
+    no_cache: bool
 
-    def __init__(self) -> None:
+    def __init__(self, no_cache: bool = True) -> None:
         self.origin = sys.dont_write_bytecode
+        self.no_cache = no_cache
 
     def __enter__(self):
-        self.activate()
+        if self.no_cache:
+            self.activate()
+        return self
 
     def __exit__(self, *_):
-        self.deactivate()
+        if self.no_cache:
+            self.deactivate()
 
     def activate(self):
         sys.dont_write_bytecode = True
 
     def deactivate(self):
         sys.dont_write_bytecode = self.origin
+
+    @staticmethod
+    def recompile_module(module: ModuleType):
+        """
+        When the module has been loaded before, recompile it to modify
+
+        ## Example
+
+        ```python
+        import targetmodule
+
+        # Mixin Here...
+
+        with CompileBoundary(no_cache=False) as compile:
+            compile.recompile_module(targetmodule)
+        ```
+        """
+        if hasattr(module, "__cached__"):
+            file = Path(module.__cached__)
+            if file.exists():
+                unlink(module.__cached__)
+        reload(module)

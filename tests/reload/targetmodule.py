@@ -1,6 +1,6 @@
 def generate(name):
-    return name + " static' tag"
+    return name + " static"
 
 
-class StaticMap:
+class Static:
     FIELD = generate("hello")

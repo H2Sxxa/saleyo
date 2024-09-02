@@ -136,7 +136,7 @@ def generate(name):
     return name + " hell world"
 
 
-class StaticMap:
+class Static:
     FIELD = generate("hello")
 
 # mixin
@@ -151,10 +151,13 @@ def mixin_a(token: Union[str, bytes, Any]):
     return token.replace(b"hell world", b"bye")
 
 
-with CompileBoundary(): # Force to compile
-    from targetmodule import StaticMap
+with CompileBoundary():
+    from targetmodule import Static
 
-print(StaticMap().FIELD)  # hello bye
+    # If targetmodule import before Compile BroadCast initialize
+    # Use `CompileBoundary.recompile_module(...)`, it's compated with `no_cache=False`
+
+print(targetmodule.Static().FIELD)  # hello bye
 
 >>> hello bye
 ```

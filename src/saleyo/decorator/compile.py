@@ -10,7 +10,7 @@ from saleyo.base.compile_broadcast import (
 
 
 class CompileTime:
-    """This decorator should be **dangerous**, it will affect the compile of .pyc. If you found it not work, please delete the target import cache"""
+    """This decorator is **dangerous**, it will affect the compile of .pyc. If you found it not work, please consider delete the target import `__py_cache__` and then use a `CompileBoundary`"""
 
     locator: Callable[[CompileInfo], bool]
     token: Union[int, str]
@@ -56,7 +56,7 @@ class CompileTime:
 
 
 class CompileToken(CompileTime):
-    """Alternative version of CompileTime, just modify source."""
+    """Alternative version of CompileTime, just modify source, but it is also **dangerous**"""
 
     def __call__(
         self, processor: Callable[[Union[str, bytes, Any]], Union[str, bytes, Any]]
