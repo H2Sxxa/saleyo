@@ -2,7 +2,7 @@ from typing import Callable, Generic, Optional
 
 from ..base.template import MixinOperation
 from ..base.toolchain import DefaultToolChain, ToolChain
-from ..base.typing import M, P, T
+from ..base.typing import RT, M, P, T
 
 
 class Accessor(Generic[T], MixinOperation[str]):
@@ -63,7 +63,7 @@ class Accessor(Generic[T], MixinOperation[str]):
         return f"Accessor {{ value: {self._inner} ({id(self._inner)}) }}"
 
 
-class FunctionAccessor(Generic[P, T], Accessor[Callable[P, T]]):
+class FunctionAccessor(Generic[P, RT], Accessor[Callable[P, RT]]):
     """
     `FunctionAccessor` can be call directly.
 
@@ -86,7 +86,7 @@ class FunctionAccessor(Generic[P, T], Accessor[Callable[P, T]]):
     ```
     """
 
-    def __call__(self, *args: P.args, **kwargs: P.kwargs) -> T:
+    def __call__(self, *args: P.args, **kwargs: P.kwargs) -> RT:
         """
         Call the `argument` function in target, don't use until The `mixin` method call.
         """

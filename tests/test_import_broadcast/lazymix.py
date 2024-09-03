@@ -1,26 +1,31 @@
 from types import ModuleType
-from saleyo.base.import_broadcast import list_import_listeners
+from typing import Any
+
+from saleyo.broadcast.importmod import ImportBroadCast
 from saleyo.decorator.mixin import Mixin
 from saleyo.operation.hook import Pre
 
+broadcast = ImportBroadCast.instance()
+
 
 def locator(name: str, module: ModuleType):
-    if name == "targetmod":
-        if module.__dict__.__contains__("NeedLazyMixin"):
-            return module.NeedLazyMixin
+    if name == "targetmod" and module.__dict__.__contains__("NeedLazyMixin"):
+        return module.NeedMixin
     return None
 
 
 @Mixin.lazy(locator)
 class MixinTarget:
     @Pre
-    def hello(self):
+    @staticmethod
+    def hello(this: Any) -> None:
+        print(this)
         print("Pre Hook")
 
 
-print(list_import_listeners())
-import targetmod as targetmod  # noqa: E402
+print(broadcast.listeners())
+import targetmod  # noqa: E402
 
-print(list_import_listeners())
+print(broadcast.listeners())
 
-targetmod.NeedLazyMixin().hello()
+targetmod.NeedMixin().hello()

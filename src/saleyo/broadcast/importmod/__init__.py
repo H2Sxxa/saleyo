@@ -3,7 +3,7 @@ from types import ModuleType
 from typing import Any, Callable, Dict, Optional, Union
 
 from saleyo.base.broadcast import BroadCaster
-from saleyo.base.typing import M, IterableOrSingle
+from saleyo.base.typing import IterableOrSingle, M
 
 
 class ImportBroadCast(BroadCaster[[str, ModuleType], IterableOrSingle[M]]):

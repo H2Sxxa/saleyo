@@ -1,3 +1,4 @@
+import sys
 from collections import OrderedDict
 from dataclasses import dataclass
 from importlib import reload
@@ -5,7 +6,6 @@ from os import unlink
 from pathlib import Path
 from types import ModuleType
 from typing import Any, Callable, Dict, Optional, Tuple, Union
-import sys
 
 from saleyo.base.broadcast import BroadCaster
 

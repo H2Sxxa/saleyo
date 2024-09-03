@@ -82,7 +82,7 @@ foo.demo()
 >>> post hello world
 ```
 
-### Lazy Mixin - Mixin a Object before importing its module
+### Lazy Mixin - Define Mixin before importing module
 
 Lazy Mixin will be triggered after importing
 
@@ -98,29 +98,33 @@ class NeedMixin:
 # mixin
 # put mixin in a single file and import to use is better
 from types import ModuleType
-from saleyo.base.import_broadcast import list_import_listeners
+from typing import Any
+
+from saleyo.broadcast.importmod import ImportBroadCast
 from saleyo.decorator.mixin import Mixin
 from saleyo.operation.hook import Pre
 
-
-def locater(name: str, module: ModuleType):
-    if name == "targetmod":
-        if module.__dict__.__contains__("NeedMixin"):
-            return module.NeedMixin
-    return None # Dont Mixin this module
+broadcast = ImportBroadCast.instance()
 
 
-@Mixin.lazy(locater)
+def locator(name: str, module: ModuleType):
+    if name == "targetmod" and module.__dict__.__contains__("NeedLazyMixin"):
+        return module.NeedMixin
+    return None
+
+
+@Mixin.lazy(locator)
 class MixinTarget:
     @Pre
-    def hello(self):
+    @staticmethod
+    def hello(this: Any) -> None:
         print("Pre Hook")
 
 
-print(list_import_listeners()) # {hashkey: Callable}
-import targetmod as targetmod  # noqa: E402
+print(broadcast.listeners())
+import targetmod  # noqa: E402
 
-print(list_import_listeners()) # {} auto dispose after setting
+print(broadcast.listeners())
 
 targetmod.NeedMixin().hello()
 
@@ -189,9 +193,9 @@ print("hello world {}".format("python"))
 ```
 
 
-### Custom Operation
+### Custom Mixin Operation
 
-The default operations can't satify you? Why not try define a operation yourself!
+The default operations can't satify you? Try define a operation yourself!
 
 ```python
 from typing import Any

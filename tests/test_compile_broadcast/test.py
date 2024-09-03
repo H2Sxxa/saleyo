@@ -1,6 +1,8 @@
 from typing import Any, Union
-from saleyo.decorator.compile import CompileToken, CompileBoundary
+
 import targetmodule
+
+from saleyo.decorator.compile import CompileBoundary, CompileToken
 
 
 @CompileToken(lambda info: "targetmodule.py" in str(info.filename))

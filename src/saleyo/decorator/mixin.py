@@ -1,7 +1,6 @@
 from types import ModuleType
 from typing import Any, Callable, Generic, Iterable, List, Optional, Union
 
-
 from ..base.template import MixinOperation
 from ..base.toolchain import DefaultToolChain, ToolChain
 from ..base.typing import IterableOrSingle, M, T
@@ -148,9 +147,10 @@ class Mixin(Generic[M]):
         """
         Please call lazy before import a module.
 
-        when the `factory` return a non-None value, the Mixin Class will apply to target.
+        when the `factory` return a non-None value, the Mixin Class will apply to target
 
-        You can add the listener yourself to controller more details, please see `saleyo.base.import_broadcast`
+        You can add the listener yourself to controller more details,
+        please see `saleyo.base.import_broadcast`
 
         initialize: initialize the import-broadcast
 

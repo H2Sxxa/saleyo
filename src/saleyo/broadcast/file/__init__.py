@@ -1,5 +1,6 @@
 from collections import OrderedDict
 from typing import Any, Callable, Dict, Optional, Union
+
 from saleyo.base.broadcast import BroadCaster
 from saleyo.base.toolchain import Arguments
 
@@ -27,8 +28,9 @@ class FileLoaderBroadCast(BroadCaster[[str, bytes], Optional[bytes]]):
 
     @staticmethod
     def initialize():
-        from saleyo.operation import Both
         from importlib._bootstrap_external import FileLoader
+
+        from saleyo.operation import Both
 
         instance = FileLoaderBroadCast.instance()
 
