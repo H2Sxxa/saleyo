@@ -38,7 +38,7 @@ class CompileTime:
         if initialize:
             CompileBroadCast.instance().initialize()
 
-    def key_rev(self, key):
+    def __key_rev(self, key):
         self.dispose_key = key
 
     def __call__(self, processor: Callable[[CompileInfo], CompileInfo]):
@@ -54,7 +54,7 @@ class CompileTime:
         broadcast.add_listener(
             listener=listener,
             key=self.key,
-            key_rev=self.key_rev if self.auto_dispose else None,
+            key_rev=self.__key_rev if self.auto_dispose else None,
             disposable=self.disposable,
         )
 

@@ -7,7 +7,7 @@ from ..base.typing import M
 
 class ReName(MixinOperation[str]):
     """
-    Rename the target name.
+    Rename the target.
     """
 
     new: str
@@ -47,7 +47,7 @@ class Alias(MixinOperation[str]):
 
 
 class Insert(MixinOperation[Any]):
-    """Will cover target when target exists."""
+    """Insert a method to target, and will cover target when target exists."""
 
     def mixin(self, target: M, toolchain: ToolChain = DefaultToolChain) -> None:
         return toolchain.tool_setattr(target, self.argument.__name__, self.argument)

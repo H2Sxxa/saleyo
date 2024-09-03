@@ -1,9 +1,15 @@
 """
 **Saleyo** is a package to modify external python code in runtime.
 
-The `operation` module defines some default `MixinOperation`.
+`base` module defined some abstract class/type and
+you can extend Saleyo by this.
 
-The `base` module is used to extend your own `mixin` method.
+`broadcast` module defines some `BroadCaster`, the broadcaster initialize to inject
+functions in builtins/importlib/... and broadcast to support some decorators work.
+
+`decorator` module defines some Decorators, it's the most import module in Saleyo.
+
+`operation` module defines some default `MixinOperation`.
 
 Don't know how to start? Please see the part of Basic Tutorial in README.
 

@@ -10,9 +10,9 @@ class Mixin(Generic[M]):
     """
     A `Mixin` Decorator is used to invoke all the `MixinOperation` in Mixin Class.
 
-    If the target is a special class, you should custom the toolchain yourself.
+    If the target is not a common class, you should custom the toolchain yourself.
 
-    When the target if a `Iterable` object, Please use [`target`]
+    **When the target if a `Iterable` object, Please use [`target`]**
 
     It is recommend to use `assert isinstance(self, <target>)` at the head of
     operation functions, although there may be some performance cost,

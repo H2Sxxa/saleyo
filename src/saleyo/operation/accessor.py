@@ -83,6 +83,7 @@ class FunctionAccessor(Generic[P, RT], Accessor[Callable[P, RT]]):
 
     ```python
     something: FunctionAccessor[[str], None] = FunctionAccessor("something")
+    
     ```
     """
 

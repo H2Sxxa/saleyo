@@ -5,6 +5,8 @@ from saleyo.base.typing import RT, P
 
 
 class BroadCaster(Generic[P, RT], ABC):
+    """Abstract Definition of `BroadCaster`"""
+
     def add_listener(
         self,
         listener: Callable[P, RT],

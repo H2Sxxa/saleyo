@@ -17,7 +17,8 @@ class Intercept(Generic[_PA, _PB], MixinOperation[Callable[[_A[_PA]], _B[_PB]]])
     Then, you can handle thefse arguments in your own function and make a redirect to
     another function.
 
-    If you just want to modify the arguments or the result, please see `Pre` and `Post`.
+    If you just want to modify the arguments or the result,
+    please see `saleyo.operation.hook`.
     """
 
     target_name: Optional[str]

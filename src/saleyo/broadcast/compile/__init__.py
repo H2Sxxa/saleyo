@@ -12,6 +12,8 @@ from saleyo.base.broadcast import BroadCaster
 
 @dataclass
 class CompileInfo:
+    """Concrete Arguments passed to `builtins.compile`"""
+
     source: Union[str, bytes, Any]
     filename: Union[str, bytes, Any]
     mode: str
@@ -36,6 +38,8 @@ class CompileInfo:
 
 
 class CompileBroadCast(BroadCaster[[CompileInfo], Optional[CompileInfo]]):
+    """BroadCast when `builtins.compile` called"""
+
     _instance: Optional["CompileBroadCast"] = None
     _initialize_flag: bool = False
     _listeners: OrderedDict[
@@ -103,10 +107,15 @@ class CompileBoundary:
     ## Example
 
     ```python
-    with CompileBoundary():
+    import module_top
+
+    # something
+
+    with CompileBoundary() as compile:
         import module_a
         import module_b
         import module_c
+        compile.recompile_module(module_top)
     ```
     """
 
