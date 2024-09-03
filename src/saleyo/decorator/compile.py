@@ -4,7 +4,7 @@ from saleyo.broadcast.compile import (
     CompileBoundary as CompileBoundary,
 )
 from saleyo.broadcast.compile import (
-    CompileBroadCast,
+    CompileBroadCaster,
     CompileInfo,
 )
 
@@ -36,13 +36,13 @@ class CompileTime:
         self.disposable = disposable
 
         if initialize:
-            CompileBroadCast.instance().initialize()
+            CompileBroadCaster.instance().initialize()
 
     def __key_rev(self, key):
         self.dispose_key = key
 
     def __call__(self, processor: Callable[[CompileInfo], CompileInfo]):
-        broadcast = CompileBroadCast.instance()
+        broadcast = CompileBroadCaster.instance()
 
         def listener(info: CompileInfo):
             if self.locator(info):

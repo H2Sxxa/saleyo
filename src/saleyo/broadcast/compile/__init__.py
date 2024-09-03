@@ -37,10 +37,10 @@ class CompileInfo:
         )
 
 
-class CompileBroadCast(BroadCaster[[CompileInfo], Optional[CompileInfo]]):
+class CompileBroadCaster(BroadCaster[[CompileInfo], Optional[CompileInfo]]):
     """BroadCast when `builtins.compile` called"""
 
-    _instance: Optional["CompileBroadCast"] = None
+    _instance: Optional["CompileBroadCaster"] = None
     _initialize_flag: bool = False
     _listeners: OrderedDict[
         Union[str, int], Callable[[CompileInfo], Optional[CompileInfo]]
@@ -57,14 +57,14 @@ class CompileBroadCast(BroadCaster[[CompileInfo], Optional[CompileInfo]]):
         return self._disposable_listeners if disposable else self._listeners
 
     @staticmethod
-    def instance() -> "CompileBroadCast":
-        if not CompileBroadCast._instance:
-            CompileBroadCast._instance = CompileBroadCast()
-        return CompileBroadCast._instance
+    def instance() -> "CompileBroadCaster":
+        if not CompileBroadCaster._instance:
+            CompileBroadCaster._instance = CompileBroadCaster()
+        return CompileBroadCaster._instance
 
     @staticmethod
     def initialize():
-        if CompileBroadCast._initialize_flag:
+        if CompileBroadCaster._initialize_flag:
             return
 
         import builtins
@@ -85,7 +85,7 @@ class CompileBroadCast(BroadCaster[[CompileInfo], Optional[CompileInfo]]):
                     nonlocal info
                     info = rev
 
-            CompileBroadCast.instance().all_notifiers(on_value=on_value)(info)
+            CompileBroadCaster.instance().all_notifiers(on_value=on_value)(info)
 
             return origin_compile(
                 info.source,
@@ -97,7 +97,7 @@ class CompileBroadCast(BroadCaster[[CompileInfo], Optional[CompileInfo]]):
 
         builtins.compile = broadcast
 
-        CompileBroadCast._initialize_flag = True
+        CompileBroadCaster._initialize_flag = True
 
 
 class CompileBoundary:

@@ -160,9 +160,9 @@ class Mixin(Generic[M]):
 
         disposable: remove listener after importing first module
         """
-        from saleyo.broadcast.importmod import ImportBroadCast
+        from saleyo.broadcast.importmod import ImportBroadCaster
 
-        broadcast = ImportBroadCast()
+        broadcast = ImportBroadCaster.instance()
 
         if initialize:
             broadcast.initialize()

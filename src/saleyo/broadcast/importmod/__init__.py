@@ -6,8 +6,8 @@ from saleyo.base.broadcast import BroadCaster
 from saleyo.base.typing import IterableOrSingle, M
 
 
-class ImportBroadCast(BroadCaster[[str, ModuleType], IterableOrSingle[M]]):
-    _instance: Optional["ImportBroadCast"] = None
+class ImportBroadCaster(BroadCaster[[str, ModuleType], IterableOrSingle[M]]):
+    _instance: Optional["ImportBroadCaster"] = None
     _initialize_flag: bool = False
     _listeners: OrderedDict[
         Union[str, int], Callable[[str, ModuleType], IterableOrSingle[M]]
@@ -24,23 +24,23 @@ class ImportBroadCast(BroadCaster[[str, ModuleType], IterableOrSingle[M]]):
         return self._disposable_listeners if disposable else self._listeners
 
     @staticmethod
-    def instance() -> "ImportBroadCast":
-        if not ImportBroadCast._instance:
-            ImportBroadCast._instance = ImportBroadCast()
-        return ImportBroadCast._instance
+    def instance() -> "ImportBroadCaster":
+        if not ImportBroadCaster._instance:
+            ImportBroadCaster._instance = ImportBroadCaster()
+        return ImportBroadCaster._instance
 
     @staticmethod
     def initialize():
-        if ImportBroadCast._initialize_flag:
+        if ImportBroadCaster._initialize_flag:
             return
 
         import sys
 
         class ImportBroadCastDict(type(sys.modules)):
             def __setitem__(self, key: str, value: ModuleType) -> None:
-                ImportBroadCast.instance().all_notifiers()(key, value)
+                ImportBroadCaster.instance().all_notifiers()(key, value)
 
                 return super().__setitem__(key, value)
 
         sys.modules = ImportBroadCastDict(sys.modules)
-        ImportBroadCast._initialize_flag = True
+        ImportBroadCaster._initialize_flag = True

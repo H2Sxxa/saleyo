@@ -1,3 +1,3 @@
-from . import FileLoaderBroadCast
+from . import FileLoaderBroadCaster
 
-FileLoaderBroadCast.instance().initialize()
+FileLoaderBroadCaster.instance().initialize()

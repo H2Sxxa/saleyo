@@ -1,6 +1,6 @@
 from typing import Any, Callable, Optional
 
-from saleyo.broadcast.file import FileLoaderBroadCast
+from saleyo.broadcast.file import FileLoaderBroadCaster
 
 
 class FileLoadTime:
@@ -32,13 +32,13 @@ class FileLoadTime:
         self.disposable = disposable
 
         if initialize:
-            FileLoaderBroadCast.instance().initialize()
+            FileLoaderBroadCaster.instance().initialize()
 
     def __key_rev(self, key):
         self.dispose_key = key
 
     def __call__(self, processor: Callable[[str, bytes], bytes]) -> Any:
-        broadcast = FileLoaderBroadCast.instance()
+        broadcast = FileLoaderBroadCaster.instance()
 
         def listener(path: str, bytecode: bytes):
             if self.locator(path, bytecode):

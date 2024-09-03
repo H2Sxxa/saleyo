@@ -5,8 +5,8 @@ from saleyo.base.broadcast import BroadCaster
 from saleyo.base.toolchain import Arguments
 
 
-class FileLoaderBroadCast(BroadCaster[[str, bytes], Optional[bytes]]):
-    _instance: Optional["FileLoaderBroadCast"] = None
+class FileLoaderBroadCaster(BroadCaster[[str, bytes], Optional[bytes]]):
+    _instance: Optional["FileLoaderBroadCaster"] = None
     _listeners: OrderedDict[
         Union[str, int], Callable[[str, bytes], Optional[bytes]]
     ] = OrderedDict()
@@ -16,10 +16,10 @@ class FileLoaderBroadCast(BroadCaster[[str, bytes], Optional[bytes]]):
     ] = OrderedDict()
 
     @staticmethod
-    def instance() -> "FileLoaderBroadCast":
-        if not FileLoaderBroadCast._instance:
-            FileLoaderBroadCast._instance = FileLoaderBroadCast()
-        return FileLoaderBroadCast._instance
+    def instance() -> "FileLoaderBroadCaster":
+        if not FileLoaderBroadCaster._instance:
+            FileLoaderBroadCaster._instance = FileLoaderBroadCaster()
+        return FileLoaderBroadCaster._instance
 
     def listeners(
         self, disposable: bool = False
@@ -32,7 +32,7 @@ class FileLoaderBroadCast(BroadCaster[[str, bytes], Optional[bytes]]):
 
         from saleyo.operation import Both
 
-        instance = FileLoaderBroadCast.instance()
+        instance = FileLoaderBroadCaster.instance()
 
         def get_data(origin: Arguments[FileLoader, str], func):
             bytecode = func(*origin.args, **origin.kwargs)

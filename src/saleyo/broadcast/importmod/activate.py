@@ -1,4 +1,4 @@
-from . import ImportBroadCast
+from . import ImportBroadCaster
 
 
-ImportBroadCast.instance().initialize()
+ImportBroadCaster.instance().initialize()

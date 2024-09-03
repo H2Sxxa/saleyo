@@ -1,11 +1,11 @@
 from types import ModuleType
 from typing import Any
 
-from saleyo.broadcast.importmod import ImportBroadCast
+from saleyo.broadcast.importmod import ImportBroadCaster
 from saleyo.decorator.mixin import Mixin
 from saleyo.operation.hook import Pre
 
-broadcast = ImportBroadCast.instance()
+broadcast = ImportBroadCaster.instance()
 
 
 def locator(name: str, module: ModuleType):

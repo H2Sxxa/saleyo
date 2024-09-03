@@ -1,3 +1,3 @@
-from . import CompileBroadCast
+from . import CompileBroadCaster
 
-CompileBroadCast.instance().initialize()
+CompileBroadCaster.instance().initialize()
