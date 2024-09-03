@@ -1,5 +1,5 @@
 """
-Saleyo is a module to modify external python code in runtime.
+**Saleyo** is a package to modify external python code in runtime.
 
 The `operation` module defines some default `MixinOperation`.
 
