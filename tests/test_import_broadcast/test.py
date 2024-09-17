@@ -1,7 +1,7 @@
-from saleyo.base.import_broadcast import activate as activate
-from saleyo.base.import_broadcast import add_listen_import
+from saleyo.broadcast.importmod import ImportBroadCaster
+from saleyo.broadcast.importmod import activate as activate
 
-add_listen_import(lambda k, v: print(k, v))
+ImportBroadCaster.instance().add_listener(lambda k, v: print(k, v))
 
 
 def something():

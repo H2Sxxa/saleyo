@@ -1,4 +1,5 @@
 import test_module_a
+
 from saleyo.decorator.mixin import Mixin
 from saleyo.operation.overwrite import OverWrite
 
