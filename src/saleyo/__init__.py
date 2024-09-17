@@ -24,6 +24,7 @@ from . import base as base
 from . import broadcast as broadcast
 from . import decorator as decorator
 from . import operation as operation
+from . import parser as parser
 from .base.template import MixinOperation as MixinOperation
 from .base.toolchain import Arguments as Arguments
 from .base.toolchain import CPyToolChain as CPyToolChain
@@ -47,3 +48,4 @@ from .operation import Post as Post
 from .operation import Pre as Pre
 from .operation import Processor as Processor
 from .operation import ReName as ReName
+from .parser import Token as Token

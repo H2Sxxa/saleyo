@@ -1,6 +1,4 @@
-from saleyo import Processor
-from saleyo.decorator.mixin import Mixin
-from saleyo.operation.processor import Token
+from saleyo import Mixin, Processor, Token
 
 
 class Target:
