@@ -108,7 +108,7 @@ broadcast = ImportBroadCaster.instance()
 
 
 def locator(name: str, module: ModuleType):
-    if name == "targetmod" and module.__dict__.__contains__("NeedLazyMixin"):
+    if name == "targetmod" and module.__dict__.__contains__("NeedMixin"):
         return module.NeedMixin
     return None
 
