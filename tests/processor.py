@@ -12,7 +12,11 @@ class SelfMix:
     @Processor.configure(target_name="target_func")
     @staticmethod
     def processor(token: str):
-        return Token(token.replace("pass", "print('hello world')")).build()
+        tk = Token(token)
+        tk.declearation = ["def target_func(param: str):"]
+        tk.code = ["return 'hello world'"]
+        print(tk)
+        return tk.build()
 
 
-Target().target_func()
+print(Target().target_func("hello"))  # type: ignore
