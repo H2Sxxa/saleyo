@@ -1,5 +1,15 @@
 from types import ModuleType
-from typing import Any, Dict, Iterable, ParamSpec, Type, TypeVar, Union
+from typing import Any, Dict, Iterable, Type, TypeVar, Union
+
+try:
+    from typing import ParamSpec
+except ImportError:
+    try:
+        from typing_extensions import ParamSpec  # type: ignore
+    except ImportError as e:
+        raise ImportError(
+            "Please install typing_extensions for Python < 3.10 for ParamSpec."
+        ) from e
 
 # Generic
 

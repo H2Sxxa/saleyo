@@ -110,6 +110,9 @@ class Arguments(Generic[P]):
     def __str__(self) -> str:
         return f"Arugument( positional: {self.args}, keyword: {self.kwargs} )"
 
+    def apply(self, target: Callable[P, T]) -> T:
+        return target(*self.args, **self.kwargs)
+
 
 class InvokeEvent(Generic[P, T]):
     """
